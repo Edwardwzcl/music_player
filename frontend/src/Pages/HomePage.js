@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import useAuthRedirect from "../Hooks/useAuthRedirect";
 import UserProfile from '../Components/UserProfile';
 import InputSubmit from "../Components/InputSubmit";
-import RadialSelector from '../Components/RadialSelector';
+import LikeRecent from '../Components/LikeRecent';
 import RateeCard from '../Components/RateeCard';
 import Dropdown from '../Components/Dropdown';
 import '../StyleSheets/Home.css';
@@ -72,13 +72,20 @@ function HomePage() {
                 
                 <UserProfile />
                 <InputSubmit onSubmit={setQuery} />
-                
+                <LikeRecent
+                    userID={0}
+                    type={'Like'}
+                />
+                <LikeRecent
+                    userID={0}
+                    type={'Recent'}
+                />
                 
             </div>
             <div className='homeDisplayDiv'>
                 <div className='SelectorDivRow'>
                 </div>
-                <h1>Search Results</h1>
+                {/* <h1>Search Results</h1> */}
                 <div className='SearchResults'>
                     {searchResults.map((result) => (
                         <RateeCard
