@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../StyleSheets/RateeCard.css';
+import '../StyleSheets/LikeRecent.css';
 
 function RateeCard({ RateeId, Name, Country, Discipline }) {
     const navigate = useNavigate();
