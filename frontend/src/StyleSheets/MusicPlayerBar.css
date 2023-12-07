@@ -29,7 +29,7 @@
     outline: none;
 }
 
-button {
+.music-player-bar button {
     background-color: transparent;
     border: none;
     color: #FFFFFF;

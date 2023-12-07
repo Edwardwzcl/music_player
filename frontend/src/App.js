@@ -14,8 +14,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<HomePage />} />
-          <Route path="/s" element={<SongPage />} />
           <Route path='/artist/:artistId' element={<ArtistPage />} /> // Assuming you have a URL pattern for artists
+          <Route path='/song/:songId' element={<SongPage />} /> // Assuming you have a URL pattern for songs
         </Routes>
       </CombinedContextProvider>
   );
