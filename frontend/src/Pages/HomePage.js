@@ -13,9 +13,7 @@ import '../StyleSheets/Home.css';
 
 
 function HomePage() {
-    const [query, setName] = useState('');
-    const [order, setOrder] = useState('');
-    const [orderBy, setOrderBy] = useState('');
+    const [query, setQuery] = useState('');
 
     const [searchResults, setSearchResults] = useState([]);
     // if username is null, redirect to login page
@@ -38,35 +36,15 @@ function HomePage() {
     // };
 
     const fetchSearchResults = async () => {
-        const baseUrl = 'http://localhost:8080/api/filter';
-        const queryOrderBy = orderBy || ''; // Default to empty string if orderBy is falsy
-        const queryOrder = order || '';
-        // country is not null or all
-        const queryCountry = country && country !== 'All' ? country : '';
-        const queryName = name || '';
+        const baseUrl = 'http://localhost:8080/api/search';
+        const searchQuery = query || '';
     
         // Create an object to hold the parameters
         const queryParams = {
-            table: table,
+            query: searchQuery,
         };
     
-        // Add optional parameters based on user input
-        if (queryOrder) {
-            queryParams.order = queryOrder;
-        }
         
-        if (queryOrderBy) {
-            queryParams.order_by = queryOrderBy;
-        }
-    
-        if (queryCountry) {
-            queryParams.country = queryCountry;
-        }
-    
-        if (queryName) {
-            queryParams.name = queryName;
-        }
-    
         // Convert the object to a URL-encoded query string
         const queryString = new URLSearchParams(queryParams).toString();
     
@@ -77,7 +55,7 @@ function HomePage() {
     
         try {
             const response = await axios.get(url);
-            const query_data = response.data.data
+            const query_data = response.data.result
             console.log('Server Response:', query_data);
             // console.log('Server Response type:', typeof(response.data.data[0]));
             setSearchResults(query_data);
@@ -93,39 +71,12 @@ function HomePage() {
             <div className='homeControlDiv'>
                 
                 <UserProfile />
-                <InputSubmit onSubmit={setName} />
-                <div className='SelectorDiv'>
-                    <button onClick={reset}>Reset All</button>
-                </div>
-                <div className='SelectorDiv'>
-                    <p>Order Results:</p>
-                    <RadialSelector options={['ASC', 'DESC']} onOptionSelected={setOrder} />
-                </div>
-                <div className='SelectorDiv'>
-                    <p>Order By:</p>
-                    <RadialSelector options={orderByAttributes} onOptionSelected={setOrderBy} />
-                </div>
-                <div className='SelectorDiv'>
-                    <p>Table:</p>
-                    <RadialSelector options={tables} onOptionSelected={setTable} />
-                </div>
-                <div className='SelectorDiv'>
-                    <p>Country:</p>
-                    <Dropdown options={countries} onOptionSelected={setCountry} />
-                </div>
+                <InputSubmit onSubmit={setQuery} />
+                
                 
             </div>
             <div className='homeDisplayDiv'>
                 <div className='SelectorDivRow'>
-                <Link to="/medal">
-                    <button style={{ marginRight: '10px' }}>Go to Medal Page</button>
-                </Link>
-                <Link to="/playerRank">
-                    <button style={{ marginRight: '10px' }}>Go to Player Rank Page</button>
-                </Link>
-                <Link to="/funFact">
-                    <button style={{ marginRight: '10px' }}>Go to Fun Fact Page</button>
-                </Link>
                 </div>
                 <h1>Search Results</h1>
                 <div className='SearchResults'>

@@ -18,7 +18,7 @@ function InputSubmit({ onSubmit }) {
     <form onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Enter Full Name to Search..."
+        placeholder="Enter keyword to Search.."
         onChange={handleInputChange}
       />
       <button type="submit">Submit</button>
