@@ -1,16 +1,10 @@
-import React, { useState, useContext, useRef } from 'react';
-import axios from 'axios';
-import { UserContext } from '../Components/UserProvider';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
-import useAuthRedirect from "../Hooks/useAuthRedirect";
-import UserProfile from '../Components/UserProfile';
-import InputSubmit from "../Components/InputSubmit";
-import LikeRecent from '../Components/LikeRecent';
-import RateeCard from '../Components/RateeCard';
-import Dropdown from '../Components/Dropdown';
-import '../StyleSheets/Home.css';
+import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
 
+import MusicPlayerBar from '../Components/MusicPlayerBar';
+import ArtistCard from '../Components/ArtistCard';
+import '../StyleSheets/Home.css';
 
 function HomePage() {
     const [query, setQuery] = useState('');
@@ -24,16 +18,6 @@ function HomePage() {
     }, []);
 
 
-
-
-    // reset function
-    // const reset = () => {
-    //     setCountry('');
-    //     setTable(tables[0]);
-    //     setName('');
-    //     setOrder('');
-    //     setOrderBy('');
-    // };
 
     const fetchSearchResults = async () => {
         const baseUrl = 'http://localhost:8080/api/search';
@@ -64,40 +48,42 @@ function HomePage() {
         }
     };
     
+                
+    const navigate = useNavigate();
 
+    const [artists, setArtists] = useState([
+        { artistId: 0, artistName: 'Artist 0', artistImage: 'https://via.placeholder.com/150' },
+    ]);
+    
     return (
-        <div className='homeDiv'>
-            
-            <div className='homeControlDiv'>
-                
-                <UserProfile />
-                <InputSubmit onSubmit={setQuery} />
-                <LikeRecent
-                    userID={0}
-                    type={'Like'}
-                />
-                <LikeRecent
-                    userID={0}
-                    type={'Recent'}
-                />
-                
-            </div>
-            <div className='homeDisplayDiv'>
-                <div className='SelectorDivRow'>
+        <div className='HomePage'>
+            <div className="UserPanel">
+                <div className='homeControlDiv'>
+                    
+                    <UserProfile />
+                    <InputSubmit onSubmit={setQuery} />
+                    <LikeRecent
+                        userID={0}
+                        type={'Like'}
+                    />
+                    <LikeRecent
+                        userID={0}
+                        type={'Recent'}
+                    />
+                    
                 </div>
-                {/* <h1>Search Results</h1> */}
-                <div className='SearchResults'>
-                    {searchResults.map((result) => (
-                        <RateeCard
-                            RateeId = {result.RateeId}
-                            Name={result.Name}
-                            Country={result.Country}
-                            Discipline={result.Discipline}
-                        />
-                    ))}
-                </div>
-                
             </div>
+            <div className="MainDisplay">
+                {artists.map((artist) => (
+                    <ArtistCard 
+                        key={artist.artistId}
+                        artistId={artist.artistId}
+                        artistName={artist.artistName}
+                        artistImage={artist.artistImage}
+                    />
+                ))}
+            </div>
+            <MusicPlayerBar />
         </div>
     );
 }

@@ -1,9 +1,3 @@
-.homeDiv {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-evenly;
-}
 
 .homeControlDiv {
     padding: 20px;
@@ -15,18 +9,22 @@
     height: 700px;
     border: rgb(113, 113, 197) 5px solid;
     border-radius: 10px;
+}
+
+.HomePage .UserPanel {
+    display: block;
+    width: 33vw;
+    height: 100vh;
+    position: fixed;
+    background-color: #3988C7;
 
 }
-.homeDisplayDiv {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    width: 50%;
-}
-.SearchResults {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
-    padding: 20px;
+
+.HomePage .MainDisplay {
+    display: block;
+    width: 66vw;
+    height: 100vh;
+    position: fixed;
+    right: 0;
+    background-color: #F2F2F2;
 }

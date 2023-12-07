@@ -2,26 +2,22 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './Pages/HomePage';
+import SongPage from './Pages/SongPage';
 import LoginPage from './Pages/LoginPage';
-import { UserProvider } from './Components/UserProvider'; // Adjust the path as necessary
-import RateePage from './Pages/RateePage';
-import MedalPage from './Pages/MedalPage';
-import FunFactPage from './Pages/FunFactPage';
-import PlayerRankPage from './Pages/PlayerRankPage';
+import ArtistPage from './Pages/ArtistPage';
+import { CombinedContextProvider } from './Components/CombinedContextProvider'; // Adjust the path as necessary
 
 
 function App() {
   return (
-      <UserProvider>
+      <CombinedContextProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<HomePage />} />
-          <Route path="/ratee/:id" element={<RateePage />} />
-          <Route path="/medal" element={<MedalPage />} />
-          <Route path="/funFact" element={<FunFactPage />} />
-          <Route path="/playerRank" element={<PlayerRankPage />} />
+          <Route path="/s" element={<SongPage />} />
+          <Route path='/artist/:artistId' element={<ArtistPage />} /> // Assuming you have a URL pattern for artists
         </Routes>
-      </UserProvider>
+      </CombinedContextProvider>
   );
 }
 
