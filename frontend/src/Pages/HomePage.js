@@ -10,17 +10,10 @@ import RadialSelector from '../Components/RadialSelector';
 import RateeCard from '../Components/RateeCard';
 import Dropdown from '../Components/Dropdown';
 import '../StyleSheets/Home.css';
-import countryList from '../Components/countryList';
 
 
 function HomePage() {
-    const tables = ['Athlete', 'Coach', 'Team'];
-    const countries = countryList
-    const orderByAttributes = ['Country', 'Name', 'Discipline'];
-    console.log(countries)
-    const [country, setCountry] = useState('');
-    const [table, setTable] = useState(tables[0]);
-    const [name, setName] = useState('');
+    const [query, setName] = useState('');
     const [order, setOrder] = useState('');
     const [orderBy, setOrderBy] = useState('');
 
@@ -30,21 +23,19 @@ function HomePage() {
 
     // whenever table or searchTerm changes, submit the search
     React.useEffect(() => {
-        console.log('Search submitted:', name, 'in', table);
-        fetchSearchResults();
-    }, [table, name, country, order, orderBy]);
+    }, []);
 
 
 
 
     // reset function
-    const reset = () => {
-        setCountry('');
-        setTable(tables[0]);
-        setName('');
-        setOrder('');
-        setOrderBy('');
-    };
+    // const reset = () => {
+    //     setCountry('');
+    //     setTable(tables[0]);
+    //     setName('');
+    //     setOrder('');
+    //     setOrderBy('');
+    // };
 
     const fetchSearchResults = async () => {
         const baseUrl = 'http://localhost:8080/api/filter';
