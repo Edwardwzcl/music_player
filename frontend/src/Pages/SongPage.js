@@ -1,6 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
+
 import MusicPlayerBar from '../Components/MusicPlayerBar';
+import ArtistCard from '../Components/ArtistCard';
+
+
 import '../StyleSheets/Song.css';
 
 function SongPage() {
