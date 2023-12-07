@@ -9,7 +9,7 @@ export default function useAuthRedirect() {
     useEffect(() => {
         if (user.username === null) {
             console.log('Not logged in, redirecting...');
-            navigate('/login');
+            // navigate('/login');
         }
     }, [navigate]);
 }
