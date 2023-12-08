@@ -7,6 +7,8 @@ import ArtistCard from '../Components/ArtistCard';
 import '../StyleSheets/Home.css';
 import InputSubmit from "../Components/InputSubmit";
 import LikeRecent from '../Components/LikeRecent';
+import axios from 'axios';
+
 
 function HomePage() {
     const [query, setQuery] = useState('');
@@ -21,7 +23,7 @@ function HomePage() {
 
 
 
-    // const fetchSearchResults = async () => {
+    // const fetchCategories = async () => {
     //     const baseUrl = 'http://localhost:8080/api/search';
     //     const searchQuery = query || '';
     
