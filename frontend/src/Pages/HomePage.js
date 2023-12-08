@@ -73,6 +73,10 @@ function HomePage() {
                         type={'Recent'}
                     />
                     
+                    <audio controls>
+                        <source src={"https://p.scdn.co/mp3-preview/b8372b1a0b8d09a5004388a654f29bef6bc37021?cid=bb898c85749e404793197d4f2fc2208b"} type="audio/mp3" />
+                        Your browser does not support the audio element.
+                    </audio>
                 </div>
             </div>
             <div className="MainDisplay">

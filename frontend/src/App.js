@@ -16,6 +16,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path='/artist/:artistId' element={<ArtistPage />} /> // Assuming you have a URL pattern for artists
           <Route path='/song/:songId' element={<SongPage />} /> // Assuming you have a URL pattern for songs
+          {/* <Route path='/category/:categoryId' element={<CategoryPage />} /> */}
         </Routes>
       </CombinedContextProvider>
   );
