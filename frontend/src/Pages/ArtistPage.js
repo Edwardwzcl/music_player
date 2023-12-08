@@ -8,8 +8,10 @@ function ArtistPage() {
     const navigate = useNavigate();
 
     const handlePlayPauseClick = () => {
-        navigate('/s');
+        navigate('/');
     }
+
+    
     
     return (
         <div className='ArtistPage'>
