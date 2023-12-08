@@ -8,12 +8,13 @@ function ArtistPage() {
     const navigate = useNavigate();
 
     const handlePlayPauseClick = () => {
-        navigate('/s');
+        navigate('/');
     }
+
+    
     
     return (
         <div className='ArtistPage'>
-            <button onClick={handlePlayPauseClick}>click me</button>
             <div className="UserPanel">
                 <p>123
                     456
@@ -23,7 +24,7 @@ function ArtistPage() {
                 </p>
             </div>
             <div className="MainDisplay">
-                
+                <button onClick={handlePlayPauseClick}>click me</button>
             </div>
             <MusicPlayerBar />
         </div>
@@ -31,3 +32,4 @@ function ArtistPage() {
 }
 
 export default ArtistPage;
+ 
