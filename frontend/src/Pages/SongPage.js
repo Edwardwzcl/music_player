@@ -11,7 +11,7 @@ import '../StyleSheets/Song.css';
 function SongPage({ songId, songName, songImage }) {
   const navigate = useNavigate();
 
-  const handlePlayPauseClick = () => {
+  const handleClick = () => {
       navigate('/');
   }
 
@@ -19,7 +19,7 @@ function SongPage({ songId, songName, songImage }) {
     <div className='SongPage'>
 
         <div className="MainDisplay">
-          <button onClick={handlePlayPauseClick}>Back</button>
+          <button onClick={handleClick}>Back</button>
           <image src="https://via.placeholder.com/150" />
           <p>a loooooooooooooooooooooooooooooooooooooooooot of text</p>
         </div>
