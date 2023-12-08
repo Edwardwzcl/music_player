@@ -1,25 +1,55 @@
-import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
 import MusicPlayerBar from '../Components/MusicPlayerBar';
 import LikeRecent from '../Components/LikeRecent';
 import InputSubmit from "../Components/InputSubmit";
+import SingleSongCard from '../Components/SingleSongCard';
 import '../StyleSheets/Home.css';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+
 
 function ArtistPage() {
     const navigate = useNavigate();
+    const { id } = useParams(); // Access the id parameter from the URL
 
-    const handlePlayPauseClick = () => {
+    // Rest of your component code...
+
+    useEffect(() => {
+        // Fetch data based on the id parameter
+        fetchSongs()
+
+        // Additional useEffect logic as needed...
+    }, [id]);
+    
+    const navigateToHome = () => {
         navigate('/');
     }
 
-    const [artists, setArtists] = useState([
-        { type: "category", id: 0, name: 'Pop', image: 'https://via.placeholder.com/150' },
+    const [songs, setSongs] = useState([
+        { id: 0, title: 'Test song', authors: "unknown"},
     ]);
     
+    const fetchSongs = async () => {
+        const url = `http://localhost:4000/artist/${id}`;
+    
+        // Create an object to hold the parameters
+    
+        console.log('Fetching from:', url);
+    
+        try {
+            const response = await axios.get(url);
+            const query_data = response.data.data
+            console.log('Server Response:', query_data);
+            // console.log('Server Response type:', typeof(response.data.data[0]));
+            setSongs(query_data);
+        } catch (error) {
+            console.error('Search Error:', error);
+        }
+    };
     
     return (
-        <div className='ArtistPage'>
+        <div className='HomePage'>
             <div className="UserPanel">
                 <div className='homeControlDiv'>
                     {/* <InputSubmit onSubmit={setQuery} /> */}
@@ -31,11 +61,20 @@ function ArtistPage() {
                         userID={0}
                         type={'Recent'}
                     />
-                    
+                    <button onClick={navigateToHome}>Back to Home</button>
                 </div>
             </div>
+            
             <div className="MainDisplay">
-                <button onClick={handlePlayPauseClick}>click me</button>
+                <div>
+                    <p>Artist</p>
+                </div>
+                {songs.map((song) => (
+                    <SingleSongCard 
+                        id={song.songId}
+                        title={song.songName}
+                    />
+                ))}
             </div>
             <MusicPlayerBar />
         </div>

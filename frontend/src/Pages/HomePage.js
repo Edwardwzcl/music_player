@@ -4,7 +4,9 @@ import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvi
 import useAuthRedirect from '../Hooks/useAuthRedirect';
 import MusicPlayerBar from '../Components/MusicPlayerBar';
 import GalleryCard from '../Components/GalleryCard';
+import ArtistCard from '../Components/ArtistCard';
 import '../StyleSheets/Home.css';
+import Dropdown from '../Components/Dropdown';
 import InputSubmit from "../Components/InputSubmit";
 import LikeRecent from '../Components/LikeRecent';
 import axios from 'axios';
@@ -12,7 +14,8 @@ import axios from 'axios';
 
 function HomePage() {
     const [query, setQuery] = useState('');
-
+    const [type, setType] = useState('category');
+    const types = ["song", "artist"]
     // if username is null, redirect to login page
     useAuthRedirect();
 
@@ -24,30 +27,19 @@ function HomePage() {
 
     React.useEffect(() => {
         // Query all the categories at start
-        // fetchCategories()
+        fetchCategories()
     }, []);
 
     const fetchCategories = async () => {
-        const baseUrl = 'http://localhost:8080/api/search';
-        const searchQuery = query || '';
+        const url = 'http://localhost:4000/genre';
     
         // Create an object to hold the parameters
-        const queryParams = {
-            query: searchQuery,
-        };
     
-        
-        // Convert the object to a URL-encoded query string
-        const queryString = new URLSearchParams(queryParams).toString();
-    
-        // Construct the full URL with the query string
-        const url = `${baseUrl}?${queryString}`;
-    
-        console.log('Fetching search results from:', url);
+        console.log('Fetching from:', url);
     
         try {
             const response = await axios.get(url);
-            const query_data = response.data.result
+            const query_data = response.data.data
             console.log('Server Response:', query_data);
             // console.log('Server Response type:', typeof(response.data.data[0]));
             setResultList(query_data);
@@ -57,26 +49,14 @@ function HomePage() {
     };
 
     const fetchSearchResults = async (query) => {
-        const baseUrl = 'http://localhost:8080/api/search';
-        const searchQuery = query || '';
-    
-        // Create an object to hold the parameters
-        const queryParams = {
-            query: searchQuery,
-        };
-    
-        
-        // Convert the object to a URL-encoded query string
-        const queryString = new URLSearchParams(queryParams).toString();
-    
-        // Construct the full URL with the query string
-        const url = `${baseUrl}?${queryString}`;
-    
-        console.log('Fetching search results from:', url);
+        const url = 'http://localhost:4000/search';
+        console.log('Fetching search results from:', url, query);
     
         try {
-            const response = await axios.get(url);
-            const query_data = response.data.result
+            const response = await axios.post(url, {
+                    content: query
+                });
+            const query_data = response.data.data['artist']
             console.log('Server Response:', query_data);
             // console.log('Server Response type:', typeof(response.data.data[0]));
             setResultList(query_data);
@@ -92,7 +72,11 @@ function HomePage() {
         <div className='HomePage'>
             <div className="UserPanel">
                 <div className='homeControlDiv'>
-                    <InputSubmit onSubmit={setQuery} />
+                    <InputSubmit onSubmit={(query) => fetchSearchResults(query)} />
+                    <div className='SelectorDiv'>
+                        <p>Country:</p>
+                        <Dropdown options={types} onOptionSelected={setType} />
+                    </div>
                     <LikeRecent
                         userID={0}
                         type={'Like'}
@@ -106,12 +90,13 @@ function HomePage() {
             <div className="MainDisplay">
                 {resultList.map((result) => (
                     <GalleryCard 
-                        type={result.type}
-                        id={result.id}
-                        name={result.name}
-                        image={result.image}
+                        type= {type}
+                        id={result.artistId}
+                        name={result.artistname}
+                        image={result.cover}
                     />
                 ))}
+                
             </div>
             <MusicPlayerBar />
         </div>
