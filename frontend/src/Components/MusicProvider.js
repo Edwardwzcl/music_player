@@ -11,6 +11,7 @@ export const MusicProvider = ({ children }) => {
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
     const [isPlaying, setIsPlaying] = useState(false);
+    const [realTime, setRealTime] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const audioRef = useRef(null);
 
@@ -69,6 +70,7 @@ export const MusicProvider = ({ children }) => {
                 if (!isFinite(currentAudio.duration)) return;
                 const newCurrentTime = (currentAudio.currentTime / currentAudio.duration) * 100;
                 setCurrentTime(newCurrentTime);
+                setRealTime(currentAudio.currentTime);
             };
 
             const handleEnded = () => {
@@ -92,6 +94,7 @@ export const MusicProvider = ({ children }) => {
             isPlaying, 
             TogglePlay, 
             currentTime, 
+            realTime,
             SeekTowards, 
             playlist,
             setPlaylist, 

@@ -46,8 +46,9 @@
     height: 25vh;
     overflow-y: auto; /* Makes content scrollable vertically */
     word-wrap: break-word; /* Breaks long words to prevent horizontal overflow */
-    font-size: 3vh; /* Adjust font size as needed */
-    font-weight: 300;
+    font-size: 20px; /* Adjust font size as needed */
+    font-weight: 250;
     color: #fff2e6;
+    white-space: pre-wrap; /* Preserves line breaks and spaces */
 
 }
