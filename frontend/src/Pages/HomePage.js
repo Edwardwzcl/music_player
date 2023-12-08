@@ -4,9 +4,10 @@ import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvi
 import useAuthRedirect from '../Hooks/useAuthRedirect';
 import MusicPlayerBar from '../Components/MusicPlayerBar';
 import ArtistCard from '../Components/ArtistCard';
-import '../StyleSheets/Home.css';
+import '../StyleSheets/Page.css';
 import InputSubmit from "../Components/InputSubmit";
 import LikeRecent from '../Components/LikeRecent';
+import SpotifyPlayer from 'react-spotify-web-playback';
 
 function HomePage() {
     const [query, setQuery] = useState('');
@@ -58,7 +59,7 @@ function HomePage() {
     ]);
     
     return (
-        <div className='HomePage'>
+        <div className='Page'>
             <div className="UserPanel">
                 <div className='homeControlDiv'>
                     <InputSubmit onSubmit={setQuery} />

@@ -1,0 +1,53 @@
+
+.SongPage {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: #3988C7;
+}
+
+.SongPage img {
+    width: 30vh;
+    height: 30vh;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 40%;
+    left: 20%;
+    border: #fff2e6 5px solid;
+}
+
+.SongPage h1 {
+    position: absolute;
+    top: 15%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    font-size: 10vh;
+    font-weight: 350;
+    color: #fff2e6;
+}
+
+.SongPage h2 {
+    position: absolute;
+    top: 30%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    font-size: 5vh;
+    font-weight: 350;
+    color: #fff2e6;
+}
+
+
+.scrollable-paragraph {
+    position: absolute;
+    top: 40%;  /* Adjust this value as needed to position below the artist name */
+    left: 60%; /* Align with your other elements */
+    transform: translate(-50%, 0);
+    width: 30vw;
+    height: 25vh;
+    overflow-y: auto; /* Makes content scrollable vertically */
+    word-wrap: break-word; /* Breaks long words to prevent horizontal overflow */
+    font-size: 3vh; /* Adjust font size as needed */
+    font-weight: 300;
+    color: #fff2e6;
+
+}

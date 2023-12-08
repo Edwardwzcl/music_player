@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
 import MusicPlayerBar from '../Components/MusicPlayerBar';
-import '../StyleSheets/Home.css';
+import '../StyleSheets/Page.css';
 
 function ArtistPage() {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ function ArtistPage() {
         navigate('/');
     }
 
-    
+
     
     return (
         <div className='ArtistPage'>
