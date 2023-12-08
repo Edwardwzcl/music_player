@@ -6,25 +6,27 @@
     /* align-items: flex-start; */
     align-items: center;
     justify-content: space-evenly;
-    height: 700px;
+    height: 75vh;
     border: rgb(113, 113, 197) 5px solid;
     border-radius: 10px;
 }
 
 .HomePage .UserPanel {
     display: block;
-    width: 33vw;
+    width: 20vw;
     height: 100vh;
     position: fixed;
-    background-color: #3988C7;
+    /* background-color: #3988C7; */
+    border: 1px solid rgba(132, 236, 13, 0.63); 
 
 }
 
 .HomePage .MainDisplay {
     display: block;
-    width: 66vw;
+    width: 79vw;
     height: 100vh;
     position: fixed;
     right: 0;
-    background-color: #be2626;
+    background-color: rgb(38, 172, 190);
+    border: 1px solid #ddd; 
 }
