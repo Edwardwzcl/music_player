@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
 import useAuthRedirect from '../Hooks/useAuthRedirect';
 import MusicPlayerBar from '../Components/MusicPlayerBar';
-import ArtistCard from '../Components/ArtistCard';
+import GalleryCard from '../Components/GalleryCard';
 import '../StyleSheets/Home.css';
 import InputSubmit from "../Components/InputSubmit";
 import LikeRecent from '../Components/LikeRecent';
@@ -55,8 +55,8 @@ function HomePage() {
                 
     const navigate = useNavigate();
 
-    const [artists, setArtists] = useState([
-        { artistId: 0, artistName: 'Artist 0', artistImage: 'https://via.placeholder.com/150' },
+    const [resultList, setResultList] = useState([
+        { type: "category", id: 0, name: 'Pop', image: 'https://via.placeholder.com/150' },
     ]);
     
     return (
@@ -76,12 +76,12 @@ function HomePage() {
                 </div>
             </div>
             <div className="MainDisplay">
-                {artists.map((artist) => (
-                    <ArtistCard 
-                        key={artist.artistId}
-                        artistId={artist.artistId}
-                        artistName={artist.artistName}
-                        artistImage={artist.artistImage}
+                {resultList.map((result) => (
+                    <GalleryCard 
+                        type={result.type}
+                        id={result.id}
+                        name={result.name}
+                        image={result.image}
                     />
                 ))}
             </div>
