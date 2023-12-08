@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../StyleSheets/ArtistCard.css'
+
 
 function GalleryCard({ type, id, name, image}) {
     const navigate = useNavigate();

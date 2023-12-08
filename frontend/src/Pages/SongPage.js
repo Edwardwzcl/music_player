@@ -10,7 +10,7 @@ import '../StyleSheets/Song.css';
 
 function SongPage({ songId, songName, songImage }) {
   const navigate = useNavigate();
-
+  
   const handleClick = () => {
       navigate('/');
   }

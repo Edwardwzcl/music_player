@@ -1,8 +1,11 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import '../StyleSheets/ArtistCard.css'; // Import the CSS file for styling
 
 function ArtistCard({ artistId, artistName, artistImage }) {
     const navigate = useNavigate();
+    
     const handleClick = () => {
         // Perform action on click
         console.log(`Artist ${artistName} clicked`);
@@ -11,7 +14,7 @@ function ArtistCard({ artistId, artistName, artistImage }) {
 
     return (
         <button className="ArtistCard" onClick={handleClick}>
-            <img src={artistImage} alt={artistName} />
+            <img className="ArtistImage" src={artistImage} alt={artistName} />
             <p>{artistName}</p>
         </button>
     );
