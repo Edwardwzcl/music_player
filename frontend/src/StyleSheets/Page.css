@@ -1,0 +1,19 @@
+.UserPanel {
+    display: block;
+    width: 15vw;
+    height: 100vh;
+    position: fixed;
+    background-color: #3988C7;
+
+}
+
+.MainDisplay {
+    display: block;
+    width: 85vw;
+    height: 100vh;
+    right: 0;
+    position: fixed;
+    background-color: #3988C7;
+}
+
+/* a7dcff */

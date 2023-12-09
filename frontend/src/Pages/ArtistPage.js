@@ -1,13 +1,13 @@
 import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
 import MusicPlayerBar from '../Components/MusicPlayerBar';
+
+import '../StyleSheets/Page.css';
 import LikeRecent from '../Components/LikeRecent';
 import InputSubmit from "../Components/InputSubmit";
 import SingleSongCard from '../Components/SingleSongCard';
-import '../StyleSheets/Home.css';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-
 
 function ArtistPage() {
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ function ArtistPage() {
         navigate('/');
     }
 
-    
+
     
     const fetchSongs = async () => {
         const url = `http://localhost:4000/artist/${id}`;

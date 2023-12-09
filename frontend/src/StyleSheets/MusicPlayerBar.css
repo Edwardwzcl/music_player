@@ -1,3 +1,9 @@
+:root{
+    --player: #3988C7;
+    --white: #fff2e6;
+}
+
+
 .music-player-bar {
     /* Existing styles */
     display: flex;
@@ -8,10 +14,12 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 100%;
-    height: 100px;
-    background-color: #3988C7;
-    color: #FFFFFF;
+    width: 100vw;
+    height: 10vh;
+    border-radius: 35px 35px 0 0;
+    border: var(--white) 2px solid;
+    background-color: var(--player);
+    color: var(--white);
 }
 .music-player-bar .player-controls {
     display: flex;
@@ -23,7 +31,7 @@
     width: 50%; /* Slider width */
     height: 5px; /* Slider height */
     border-radius: 2px;
-    background: #FFFFFF; /* Slider background */
+    background: var(--white); /* Slider background */
     cursor: pointer;
     -webkit-appearance: none;
     outline: none;
@@ -32,11 +40,12 @@
 .music-player-bar button {
     background-color: transparent;
     border: none;
-    color: #FFFFFF;
+    color: var(--white);
     cursor: pointer;
     font-size: 1.5em;
     padding: 0 10px;
     outline: none;
+    width: 50px;
 }
 
 .music-player-bar .seek-slider::-webkit-slider-thumb {
@@ -44,18 +53,18 @@
     appearance: none;
     width: 20px; /* Handle width */
     height: 20px; /* Handle height */
-    background: #3988C7; /* Handle color, change as needed */
+    background: var(--player); /* Handle color, change as needed */
     cursor: pointer;
     border-radius: 50%; /* Optional: for rounded thumb */
-    border: 3px solid white; /* Optional: for border */
+    border: 3px solid var(--white); /* Optional: for border */
 }
 
 /* Mozilla Browsers like Firefox */
 .music-player-bar .seek-slider::-moz-range-thumb {
     width: 20px; /* Handle width */
     height: 20px; /* Handle height */
-    background: #3988C7; /* Handle color, change as needed */
+    background: var(--player); /* Handle color, change as needed */
     cursor: pointer;
     border-radius: 50%; /* Optional: for rounded thumb */
-    border: 3px solid white; /* Optional: for border */
+    border: 3px solid var(--white); /* Optional: for border */
 }

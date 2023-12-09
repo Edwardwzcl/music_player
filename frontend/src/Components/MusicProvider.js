@@ -10,6 +10,7 @@ export const MusicProvider = ({ children }) => {
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
     const [isPlaying, setIsPlaying] = useState(false);
+    const [realTime, setRealTime] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const audioRef = useRef(null);
 
@@ -31,58 +32,60 @@ export const MusicProvider = ({ children }) => {
         setCurrentTime(newTime);
     };
 
-    useEffect(() => {
-        const currentAudio = audioRef.current;
-    
-        if (currentAudio) {
-            const playAudio = () => {
-                if (isPlaying) {
-                    currentAudio.play().catch(e => console.error("Error playing audio:", e));
-                }
-            };
-    
-            // Add event listener for when audio is loaded
-            currentAudio.addEventListener('loadeddata', playAudio);
-    
-            // Set new source
-            currentAudio.src = playlist[currentTrackIndex];
-    
-            return () => {
-                // Clean up event listener
-                currentAudio.removeEventListener('loadeddata', playAudio);
-            };
+    const Insert = (newTrack) => {
+        if (!newTrack) return;
+        let newIndex = currentTrackIndex + 1;
+        if (playlist.length === 0)
+        {
+            newIndex = 0;
+            setPlaylist([newTrack]);
         }
-    }, [currentTrackIndex, playlist, isPlaying]);
-    
+        else
+        {
+            playlist.splice(newIndex, 0, newTrack);
+            setCurrentTrackIndex(newIndex);
+        }
+        
+    };
+
+
+
+    // Load new track when currentTrackIndex changes
     useEffect(() => {
         const currentAudio = audioRef.current;
-    
+        if (currentAudio && playlist[currentTrackIndex]) {
+            currentAudio.src = playlist[currentTrackIndex];
+            setCurrentTime(0);
+            if (isPlaying) {
+                currentAudio.play();
+            }
+        }
+    }, [currentTrackIndex, playlist]);
+
+    useEffect(() => {
+        const currentAudio = audioRef.current;
         if (currentAudio) {
             const handleTimeUpdate = () => {
                 if (!isFinite(currentAudio.duration)) return;
                 const newCurrentTime = (currentAudio.currentTime / currentAudio.duration) * 100;
                 setCurrentTime(newCurrentTime);
+                setRealTime(currentAudio.currentTime);
             };
-    
-            currentAudio.addEventListener('timeupdate', handleTimeUpdate);
-            currentAudio.addEventListener('ended', () => {
+
+            const handleEnded = () => {
                 setCurrentTime(0);
-                setCurrentTrackIndex((currentTrackIndex + 1) % playlist.length);
-            });
-    
+                setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % playlist.length);
+            };
+
+            currentAudio.addEventListener('timeupdate', handleTimeUpdate);
+            currentAudio.addEventListener('ended', handleEnded);
+
             return () => {
                 currentAudio.removeEventListener('timeupdate', handleTimeUpdate);
-                currentAudio.removeEventListener('ended', () => {
-                    setCurrentTrackIndex((currentTrackIndex + 1) % playlist.length);
-                });
+                currentAudio.removeEventListener('ended', handleEnded);
             };
         }
     }, [currentTrackIndex, playlist.length]);
-    
-
-    
-
-
 
 
     return (
@@ -90,9 +93,11 @@ export const MusicProvider = ({ children }) => {
             isPlaying, 
             TogglePlay, 
             currentTime, 
+            realTime,
             SeekTowards, 
             playlist,
             setPlaylist, 
+            Insert,
             currentTrackIndex,
             setCurrentTrackIndex
         }}>

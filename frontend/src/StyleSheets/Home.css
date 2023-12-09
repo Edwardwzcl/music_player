@@ -1,4 +1,3 @@
-
 .homeControlDiv {
     padding: 20px;
     display: flex;
@@ -10,6 +9,7 @@
     border: rgb(113, 113, 197) 5px solid;
     border-radius: 10px;
 }
+
 
 .HomePage .UserPanel {
     display: block;

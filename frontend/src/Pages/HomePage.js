@@ -6,12 +6,13 @@ import MusicPlayerBar from '../Components/MusicPlayerBar';
 import GalleryCard from '../Components/GalleryCard';
 import SingleSongCard from '../Components/SingleSongCard';
 import ArtistCard from '../Components/ArtistCard';
+
 import '../StyleSheets/Home.css';
-import Dropdown from '../Components/Dropdown';
+//import '../StyleSheets/Page.css';
 import InputSubmit from "../Components/InputSubmit";
 import LikeRecent from '../Components/LikeRecent';
+import Dropdown from '../Components/Dropdown';
 import axios from 'axios';
-
 
 function HomePage() {
     const [query, setQuery] = useState('');
@@ -90,7 +91,7 @@ function HomePage() {
     
     
     return (
-        <div className='HomePage'>
+        <div className='Page'>
             <div className="UserPanel">
                 <div className='homeControlDiv'>
                     <div className='SelectorAndInputDiv'>
