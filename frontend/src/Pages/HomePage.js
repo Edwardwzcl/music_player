@@ -91,7 +91,7 @@ function HomePage() {
     
     
     return (
-        <div className='Page'>
+        <div className='HomePage'>
             <div className="UserPanel">
                 <div className='homeControlDiv'>
                     <div className='SelectorAndInputDiv'>

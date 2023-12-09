@@ -12,12 +12,12 @@ import '../StyleSheets/Song.css';
 function SongPage() {
   const navigate = useNavigate();
 
-  const {id} = useParams();
-  const lyricsRef = useRef(null);
+  // const {id} = useParams();
+  const lyricRef = useRef(null);
 
-  useEffect(() => {
-    fetchSong();
-  }, [id]);
+  // useEffect(() => {
+  //   fetchSong();
+  // }, [id]);
 
   const { isPlaying, 
     TogglePlay, 
@@ -35,57 +35,68 @@ function SongPage() {
       songId: 1357375695,
       songName: 'Test Song',
       songImage: 'https://via.placeholder.com/150',
-      source: '',
+      url: '',
       artistId: 0,
       artistName: 'Artist 0',
       artistImage: 'https://via.placeholder.com/150',
-      lyrics: '123asdfg123132dfsgnsdfoifhvjsdiunfghvweiovghreignbfdsuog fdsovbuigbhovifdbnuhgiofdhguioedghuifohguiosdghuiofhguifdhguiofsugiofugdfogotrfguhitrfnbiogbdsfnioupbvhdnwsipjfbndrsipghnbeis0thugbi0r-ng'
+      lyric: ''
     });
 
-    const fetchSong = async () => {
+  //   const fetchSong = async () => {
 
-        const songURL = 'http://localhost:4000/song/' + id;
-        console.log('Fetching search results from:', songURL);
+  //       const songURL = 'http://localhost:4000/song/' + id;
+  //       console.log('Fetching search results from:', songURL);
     
-        try {
-            const response = await axios.get(songURL);
-            const songData = response.data.data;
-            console.log('Server Response:', songData);
-            setSong({
-              songId: songData.songId,
-              songName: songData.songName,
-              songImage: songData.cover,
-              source: songData.url,
-              artistId: songData.artistId,
-              artistName: songData.artistName,
-              artistImage: songData.cover,
-              lyrics: songData.lyric
-            });
-            Insert(songData.url);
-        } catch (error) {
-            console.error('Search Error:', error);
-        }
-    };
+  //       try {
+  //           const response = await axios.get(songURL);
+  //           const songData = response.data.data;
+  //           console.log('Server Response:', songData);
+  //           setSong({
+  //             songId: songData.songId,
+  //             songName: songData.songName,
+  //             songImage: songData.cover,
+  //             source: songData.url,
+  //             artistId: songData.artistId,
+  //             artistName: songData.artistName,
+  //             artistImage: songData.cover,
+  //             lyric: songData.lyric
+  //           });
+  //           Insert(songData.url);
+  //       } catch (error) {
+  //           console.error('Search Error:', error);
+  //       }
+  //   };
 
-    const parseLyrics = (lyrics) => {
-      return lyrics.split('\n').map(line => {
-          const match = line.match(/\[(\d+):(\d+\.\d+)\](.*)/);
-          if (match) {
-              const minutes = parseInt(match[1], 10);
-              const seconds = parseFloat(match[2]);
-              const time = minutes * 60 + seconds;
-              return { time, text: match[3] };
-          }
-          return null;
-      }).filter(line => line !== null);
+  useEffect(() => {
+    if (!playlist[currentTrackIndex] || !playlist[currentTrackIndex]['url']) return;
+    setSong(playlist[currentTrackIndex]);
+  }, [currentTrackIndex, isPlaying, playlist]);
+
+  const parselyric = (lyric) => {
+    if (!lyric || lyric.length === 0) return [];
+  
+    return lyric.split('\n').map((line, index) => {
+      const match = line.match(/\[(\d+):(\d+\.\d+)\](.*)/);
+      if (match) {
+        const minutes = parseInt(match[1], 10);
+        const seconds = parseFloat(match[2]);
+        const time = minutes * 60 + seconds;
+        return { time, text: match[3].trim() };
+      }
+  
+      // Handle lines without timestamps or malformed timestamps
+      // You can assign a null time or calculate an estimated time based on index
+      return { time: null, text: line.trim() };
+    }).filter(line => line.text); // Filter out empty lines
   };
   
   
-  const findScrollPosition = (realTime, parsedLyrics) => {
-    if (parsedLyrics.length === 0) return 0;
+  
+  const findScrollPosition = (realTime, parsedlyric) => {
+    if (parsedlyric.length === 0) return 0;
     // Example logic - this would need refinement
     // Find the index of the current line
-    let currentLineIndex = parsedLyrics.findIndex(lyric => lyric.time > realTime) - 1;
+    let currentLineIndex = parsedlyric.findIndex(lyric => lyric.time > realTime) - 1;
     if (currentLineIndex < 0) currentLineIndex = 0;
 
     // Calculate the scroll position - this is a placeholder and needs actual logic
@@ -93,13 +104,13 @@ function SongPage() {
     return currentLineIndex * 20; // Assuming each line takes up 20px
 };
 useEffect(() => {
-  const parsedLyrics = parseLyrics(song.lyrics);
-  const scrollPosition = findScrollPosition(realTime, parsedLyrics);
+  const parsedlyric = parselyric(song.lyric);
+  const scrollPosition = findScrollPosition(realTime, parsedlyric);
 
-  if (lyricsRef.current) {
-      lyricsRef.current.scrollTop = scrollPosition;
+  if (lyricRef.current) {
+      lyricRef.current.scrollTop = scrollPosition;
   }
-}, [realTime, song.lyrics]);
+}, [realTime, song.lyric]);
 
 
   
@@ -111,8 +122,8 @@ useEffect(() => {
             <img src={song.songImage} alt={song.songName} />
             <h1>{song.songName}</h1>
             <h2>{song.artistName}</h2>
-            <div className='scrollable-paragraph' ref={lyricsRef}>
-    {parseLyrics(song.lyrics).map((line, index) => (
+            <div className='scrollable-paragraph' ref={lyricRef}>
+    {parselyric(song.lyric).map((line, index) => (
         <div key={index}>{line.text}</div>
     ))}
 </div>

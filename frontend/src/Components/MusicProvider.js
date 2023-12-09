@@ -6,7 +6,7 @@ import amp from '../Assets/AllMyPeople.mp3';
 export const MusicContext = createContext();
 
 export const MusicProvider = ({ children }) => {
-    const [playlist, setPlaylist] = useState(["https://p.scdn.co/mp3-preview/b8372b1a0b8d09a5004388a654f29bef6bc37021?cid=bb898c85749e404793197d4f2fc2208b"]);
+    const [playlist, setPlaylist] = useState([]);
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
     const [isPlaying, setIsPlaying] = useState(false);
@@ -16,7 +16,8 @@ export const MusicProvider = ({ children }) => {
 
     // input
     const TogglePlay = () => {
-        if (!playlist[currentTrackIndex] || !audioRef.current) return;
+        // if no source, return
+        if (!playlist[currentTrackIndex] || !playlist[currentTrackIndex]['url'] || !audioRef.current) return;
         if (isPlaying) {
             audioRef.current.pause();
         } else {
@@ -26,6 +27,7 @@ export const MusicProvider = ({ children }) => {
     };
 
     const SeekTowards = (newTime) => {
+        if (!playlist[currentTrackIndex] || !playlist[currentTrackIndex]['url'] || !audioRef.current) return;
         if (!playlist[currentTrackIndex] || !audioRef.current || !isFinite(audioRef.current.duration)) return;
         const time = (audioRef.current.duration / 100) * newTime;
         audioRef.current.currentTime = time;
@@ -43,9 +45,21 @@ export const MusicProvider = ({ children }) => {
         else
         {
             playlist.splice(newIndex, 0, newTrack);
+            console.log(playlist);
             setCurrentTrackIndex(newIndex);
         }
-        
+    };
+
+    const PlayNext = () => {
+        if (!playlist[currentTrackIndex] || !audioRef.current) return;
+        const nextIndex = (currentTrackIndex + 1) % playlist.length;
+        setCurrentTrackIndex(nextIndex);
+    };
+
+    const PlayPrev = () => {
+        if (!playlist[currentTrackIndex] || !audioRef.current) return;
+        const prevIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+        setCurrentTrackIndex(prevIndex);
     };
 
 
@@ -53,39 +67,56 @@ export const MusicProvider = ({ children }) => {
     // Load new track when currentTrackIndex changes
     useEffect(() => {
         const currentAudio = audioRef.current;
+        if (!playlist[currentTrackIndex] || !playlist[currentTrackIndex]['url'] || !audioRef.current) return;
+        console.log('Loading new track:', playlist[currentTrackIndex]['url']);
         if (currentAudio && playlist[currentTrackIndex]) {
-            currentAudio.src = playlist[currentTrackIndex];
+            
+            currentAudio.src = playlist[currentTrackIndex]['url'];
             setCurrentTime(0);
             if (isPlaying) {
                 currentAudio.play();
             }
         }
-    }, [currentTrackIndex, playlist]);
+    }, [currentTrackIndex]);
+
+    useEffect(() => {
+        console.log('Playlist changed:', playlist);
+        setCurrentTrackIndex(0);
+        const currentAudio = audioRef.current;
+        if (playlist.length===0 || !playlist[currentTrackIndex] || !playlist[currentTrackIndex]['url'] || !audioRef.current) return;
+        console.log('Loading new track:', playlist[currentTrackIndex]['url']);
+        if (currentAudio && playlist[currentTrackIndex]) {
+            
+            currentAudio.src = playlist[currentTrackIndex]['url'];
+            setCurrentTime(0);
+            setIsPlaying(false)
+        }
+    }, [playlist]);
 
     useEffect(() => {
         const currentAudio = audioRef.current;
-        if (currentAudio) {
-            const handleTimeUpdate = () => {
-                if (!isFinite(currentAudio.duration)) return;
-                const newCurrentTime = (currentAudio.currentTime / currentAudio.duration) * 100;
-                setCurrentTime(newCurrentTime);
-                setRealTime(currentAudio.currentTime);
-            };
+        currentAudio.addEventListener('timeupdate', handleTimeUpdate);
+        currentAudio.addEventListener('ended', PlayNext);
 
-            const handleEnded = () => {
-                setCurrentTime(0);
-                setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % playlist.length);
-            };
+        return () => {
+            currentAudio.removeEventListener('timeupdate', handleTimeUpdate);
+            currentAudio.removeEventListener('ended', PlayNext);
+        };
+    }, [])
 
-            currentAudio.addEventListener('timeupdate', handleTimeUpdate);
-            currentAudio.addEventListener('ended', handleEnded);
+    const handleTimeUpdate = () => {
+        const currentAudio = audioRef.current;
+        if (!isFinite(currentAudio.duration)) return;
+        const newCurrentTime = (currentAudio.currentTime / currentAudio.duration) * 100;
+        setCurrentTime(newCurrentTime);
+        setRealTime(currentAudio.currentTime);
+    };
 
-            return () => {
-                currentAudio.removeEventListener('timeupdate', handleTimeUpdate);
-                currentAudio.removeEventListener('ended', handleEnded);
-            };
-        }
-    }, [currentTrackIndex, playlist.length]);
+    // const handleEnded = () => {
+    //     setCurrentTime(0);
+    //     setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % playlist.length);
+    // };
+
 
 
     return (
@@ -97,9 +128,10 @@ export const MusicProvider = ({ children }) => {
             SeekTowards, 
             playlist,
             setPlaylist, 
-            Insert,
             currentTrackIndex,
-            setCurrentTrackIndex
+            Insert,
+            PlayNext,
+            PlayPrev
         }}>
             <audio ref={audioRef} hidden />
             {children}
