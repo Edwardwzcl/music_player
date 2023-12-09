@@ -13,7 +13,7 @@ function GalleryCard({ type, id, name, image}) {
 
     return (
         <button className="ArtistCard" onClick={handleClick}>
-            <img src={image} alt={name} />
+            <img className="ArtistImage" src={image} alt={name} />
             <p>{name}</p>
         </button>
     );

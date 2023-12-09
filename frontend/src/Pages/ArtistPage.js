@@ -12,7 +12,11 @@ import axios from 'axios';
 function ArtistPage() {
     const navigate = useNavigate();
     const { id } = useParams(); // Access the id parameter from the URL
+    const [songs, setSongs] = useState([
+        { id: 0, title: 'Test song', authors: "unknown"},
+    ]);
 
+    const [info, setInfo] = useState({})
     // Rest of your component code...
 
     useEffect(() => {
@@ -26,9 +30,7 @@ function ArtistPage() {
         navigate('/');
     }
 
-    const [songs, setSongs] = useState([
-        { id: 0, title: 'Test song', authors: "unknown"},
-    ]);
+    
     
     const fetchSongs = async () => {
         const url = `http://localhost:4000/artist/${id}`;
@@ -41,8 +43,10 @@ function ArtistPage() {
             const response = await axios.get(url);
             const query_data = response.data.data
             console.log('Server Response:', query_data);
-            // console.log('Server Response type:', typeof(response.data.data[0]));
-            setSongs(query_data);
+            setSongs(query_data.list)
+            setInfo(query_data.info)
+
+            setSongs(query_data.list);
         } catch (error) {
             console.error('Search Error:', error);
         }
@@ -66,11 +70,13 @@ function ArtistPage() {
             </div>
             
             <div className="MainDisplay">
-                <div>
-                    <p>Artist</p>
+                <div className="artistInfoContainer">
+                    <img className="artistImage" src={info.cover} alt="Artist Image" />
+                    <div className="artistName">{info.name}</div>
                 </div>
                 {songs.map((song) => (
                     <SingleSongCard 
+                        key={song.songId}
                         id={song.songId}
                         title={song.songName}
                     />
