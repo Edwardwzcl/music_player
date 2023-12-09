@@ -39,7 +39,7 @@
 
 .scrollable-paragraph {
     position: absolute;
-    top: 40%;  /* Adjust this value as needed to position below the artist name */
+    top: 45%;  /* Adjust this value as needed to position below the artist name */
     left: 60%; /* Align with your other elements */
     transform: translate(-50%, 0);
     width: 30vw;
@@ -52,3 +52,15 @@
     white-space: pre-wrap; /* Preserves line breaks and spaces */
 
 }
+
+.scrollable-paragraph {
+    overflow-y: scroll; /* or auto */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+
+    /* For Webkit browsers like Chrome and Safari */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
