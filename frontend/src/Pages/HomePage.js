@@ -4,6 +4,7 @@ import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvi
 import useAuthRedirect from '../Hooks/useAuthRedirect';
 import MusicPlayerBar from '../Components/MusicPlayerBar';
 import GalleryCard from '../Components/GalleryCard';
+import SingleSongCard from '../Components/SingleSongCard';
 import ArtistCard from '../Components/ArtistCard';
 import '../StyleSheets/Home.css';
 import Dropdown from '../Components/Dropdown';
@@ -16,14 +17,18 @@ function HomePage() {
     const [query, setQuery] = useState('');
     const [type, setType] = useState('category');
     const types = ["song", "artist"]
+    const [searchPerformed, setSearchPerformed] = useState(false);
+    const [resultList, setResultList] = useState([
+        { type: "category", id: 0, name: 'Pop', image: 'https://via.placeholder.com/150' },
+    ]);
+
+
     // if username is null, redirect to login page
     useAuthRedirect();
 
     const navigate = useNavigate();
 
-    const [resultList, setResultList] = useState([
-        { type: "category", id: 0, name: 'Pop', image: 'https://via.placeholder.com/150' },
-    ]);
+    
 
     React.useEffect(() => {
         // Query all the categories at start
@@ -56,47 +61,70 @@ function HomePage() {
             const response = await axios.post(url, {
                     content: query
                 });
-            const query_data = response.data.data['artist']
+            
+            let query_data;
+            if (type == "song") {
+                query_data = response.data.data['songs']
+            }
+            else {
+                query_data = response.data.data['artist']
+            }
+            
             console.log('Server Response:', query_data);
             // console.log('Server Response type:', typeof(response.data.data[0]));
             setResultList(query_data);
+            console.log(resultList)
         } catch (error) {
             console.error('Search Error:', error);
         }
+
+        setSearchPerformed(true);
     };
     
-                
+    
+    const handleDropdownChange = (type) => {
+        setType(type);
+        setSearchPerformed(false); // Reset searchPerformed when dropdown changes
+        setResultList([])
+    };
     
     
     return (
         <div className='HomePage'>
             <div className="UserPanel">
                 <div className='homeControlDiv'>
-                    <InputSubmit onSubmit={(query) => fetchSearchResults(query)} />
-                    <div className='SelectorDiv'>
-                        <p>Country:</p>
-                        <Dropdown options={types} onOptionSelected={setType} />
+                    <div className='SelectorAndInputDiv'>
+                        <InputSubmit onSubmit={(query) => fetchSearchResults(query)} />
+                        <div className='SelectorDiv'>
+                            <Dropdown options={types} onOptionSelected={handleDropdownChange} />
+                        </div>
                     </div>
-                    <LikeRecent
-                        userID={0}
-                        type={'Like'}
-                    />
-                    <LikeRecent
-                        userID={0}
-                        type={'Recent'}
-                    />
+                    <LikeRecent userID={0} type={'Like'} />
+                    <LikeRecent userID={0} type={'Recent'} />
+
                 </div>
             </div>
+
             <div className="MainDisplay">
-                {resultList.map((result) => (
-                    <GalleryCard 
-                        type= {type}
-                        id={result.artistId}
-                        name={result.artistname}
-                        image={result.cover}
-                    />
-                ))}
-                
+                {searchPerformed && type === 'song' ? (
+                    // Render SingleSongCard for 'song' type
+                    resultList.map((song) => (
+                        <SingleSongCard 
+                            id={song.id}
+                            title={song.name}
+                        />
+                    ))
+                ) : (
+                    // Render GalleryCard for 'artist' or 'category' type
+                    resultList.map((result) => (
+                        <GalleryCard 
+                            type={type}
+                            id={result.id}
+                            name={result.name}
+                            image={result.cover}
+                        />
+                    ))
+                )}
             </div>
             <MusicPlayerBar />
         </div>
