@@ -5,7 +5,62 @@
     /* align-items: flex-start; */
     align-items: center;
     justify-content: space-evenly;
-    height: 700px;
+    height: 75vh;
     border: rgb(113, 113, 197) 5px solid;
     border-radius: 10px;
+}
+
+
+.HomePage .UserPanel {
+    display: block;
+    width: 20vw;
+    height: 100vh;
+    position: fixed;
+    /* background-color: #3988C7; */
+    border: 1px solid rgba(132, 236, 13, 0.63); 
+
+}
+
+.HomePage .MainDisplay {
+    display: block;
+    width: 79vw;
+    height: 90vh;
+    position: fixed;
+    right: 0;
+    background-color: rgb(38, 172, 190);
+    border: 1px solid #ddd; 
+}
+
+
+.SelectorAndInputDiv {
+    display: flex;
+    flex-direction: column;
+    height: 33.33%;
+}
+
+.SelectorDiv {
+    margin-top: 10px; /* Adjust the value as needed */
+}
+
+.LikeRecentDiv {
+    height: 66.66%;
+}
+
+.artistInfoContainer {
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.artistImage {
+    width: 15%; /* Set the width as needed */
+    height: auto; /* Maintain the aspect ratio */
+    margin-right: 10px; /* Adjust the margin as needed */
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.artistName {
+    /* Add styles for the artist name displayed to the right of the image */
+    font-weight: bold; /* Example: Make the name bold */
 }

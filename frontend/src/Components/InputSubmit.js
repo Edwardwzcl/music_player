@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function InputSubmit({ onSubmit }) {
-  let searchTerm = '';
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleInputChange = (event) => {
-    searchTerm = event.target.value;
+    setSearchTerm(event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (onSubmit) {
       onSubmit(searchTerm);
+      // Clear the input field after submission
+      setSearchTerm('');
     }
   };
 
@@ -19,6 +21,7 @@ function InputSubmit({ onSubmit }) {
       <input
         type="text"
         placeholder="Enter keyword to Search.."
+        value={searchTerm}
         onChange={handleInputChange}
       />
       <button type="submit">Submit</button>
@@ -27,3 +30,4 @@ function InputSubmit({ onSubmit }) {
 }
 
 export default InputSubmit;
+

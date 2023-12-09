@@ -6,8 +6,7 @@ import amp from '../Assets/AllMyPeople.mp3';
 export const MusicContext = createContext();
 
 export const MusicProvider = ({ children }) => {
-    //const [playlist, setPlaylist] = useState([sop, amp, "https://p.scdn.co/mp3-preview/b8372b1a0b8d09a5004388a654f29bef6bc37021?cid=bb898c85749e404793197d4f2fc2208b"]);
-    const [playlist, setPlaylist] = useState([]);
+    const [playlist, setPlaylist] = useState(["https://p.scdn.co/mp3-preview/b8372b1a0b8d09a5004388a654f29bef6bc37021?cid=bb898c85749e404793197d4f2fc2208b"]);
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
     const [isPlaying, setIsPlaying] = useState(false);

@@ -1,0 +1,27 @@
+/* ArtistCard.css */
+
+.ArtistCard {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.ArtistCard:hover {
+    transform: scale(1.05);
+}
+
+.ArtistImage {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* Optional: If you want to align the text to the top */
+.ArtistCard p {
+    align-self: flex-start;
+}

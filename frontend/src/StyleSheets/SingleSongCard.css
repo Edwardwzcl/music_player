@@ -1,0 +1,33 @@
+/* Style for the card container */
+.SingleSongCard {
+    background-color: #f2f2f2; /* Light grey background */
+    border: 1px solid #ddd; /* Light grey border */
+    border-radius: 8px; /* Rounded corners */
+    /*padding: 10px; /* Spacing inside the card */
+    margin: 0px; /* Spacing outside the card */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: transform 0.2s; /* Smooth transform on hover */
+    min-width: 60%;
+    display: grid;
+    place-items: center;
+    /* height: 50px; */
+}
+
+
+.SingleSongCard:hover {
+    transform: translateY(-5px); /* Slight lift effect on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Increased shadow on hover */
+}
+
+
+.SingleSongCard h2 {
+    color: #333; /* Dark grey color for the text */
+    line-height: 0.8
+}
+
+
+.SingleSongCard h2 span {
+    cursor: pointer;
+    color: #0056b3; /* Blue color to indicate it is clickable */
+    font-size: 16px;
+}

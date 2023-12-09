@@ -3,86 +3,129 @@ import { useNavigate } from 'react-router-dom';
 import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
 import useAuthRedirect from '../Hooks/useAuthRedirect';
 import MusicPlayerBar from '../Components/MusicPlayerBar';
+import GalleryCard from '../Components/GalleryCard';
+import SingleSongCard from '../Components/SingleSongCard';
 import ArtistCard from '../Components/ArtistCard';
-import '../StyleSheets/Page.css';
+
+import '../StyleSheets/Home.css';
+//import '../StyleSheets/Page.css';
 import InputSubmit from "../Components/InputSubmit";
 import LikeRecent from '../Components/LikeRecent';
-import SpotifyPlayer from 'react-spotify-web-playback';
+import Dropdown from '../Components/Dropdown';
+import axios from 'axios';
 
 function HomePage() {
     const [query, setQuery] = useState('');
+    const [type, setType] = useState('category');
+    const types = ["song", "artist"]
+    const [searchPerformed, setSearchPerformed] = useState(false);
+    const [resultList, setResultList] = useState([
+        { type: "category", id: 0, name: 'Pop', image: 'https://via.placeholder.com/150' },
+    ]);
 
-    const [searchResults, setSearchResults] = useState([]);
+
     // if username is null, redirect to login page
     useAuthRedirect();
 
-    // whenever table or searchTerm changes, submit the search
-    React.useEffect(() => {
-    }, []);
-
-
-
-    // const fetchSearchResults = async () => {
-    //     const baseUrl = 'http://localhost:8080/api/search';
-    //     const searchQuery = query || '';
-    
-    //     // Create an object to hold the parameters
-    //     const queryParams = {
-    //         query: searchQuery,
-    //     };
-    
-        
-    //     // Convert the object to a URL-encoded query string
-    //     const queryString = new URLSearchParams(queryParams).toString();
-    
-    //     // Construct the full URL with the query string
-    //     const url = `${baseUrl}?${queryString}`;
-    
-    //     console.log('Fetching search results from:', url);
-    
-    //     try {
-    //         const response = await axios.get(url);
-    //         const query_data = response.data.result
-    //         console.log('Server Response:', query_data);
-    //         // console.log('Server Response type:', typeof(response.data.data[0]));
-    //         setSearchResults(query_data);
-    //     } catch (error) {
-    //         console.error('Search Error:', error);
-    //     }
-    // };
-    
-                
     const navigate = useNavigate();
 
-    const [artists, setArtists] = useState([
-        { artistId: 0, artistName: 'Artist 0', artistImage: 'https://via.placeholder.com/150' },
-    ]);
+    
+
+    React.useEffect(() => {
+        // Query all the categories at start
+        fetchCategories()
+    }, []);
+
+    const fetchCategories = async () => {
+        const url = 'http://localhost:4000/genre';
+    
+        // Create an object to hold the parameters
+    
+        console.log('Fetching from:', url);
+    
+        try {
+            const response = await axios.get(url);
+            const query_data = response.data.data
+            console.log('Server Response:', query_data);
+            // console.log('Server Response type:', typeof(response.data.data[0]));
+            setResultList(query_data);
+        } catch (error) {
+            console.error('Search Error:', error);
+        }
+    };
+
+    const fetchSearchResults = async (query) => {
+        const url = 'http://localhost:4000/search';
+        console.log('Fetching search results from:', url, query);
+    
+        try {
+            const response = await axios.post(url, {
+                    content: query
+                });
+            
+            let query_data;
+            if (type == "song") {
+                query_data = response.data.data['songs']
+            }
+            else {
+                query_data = response.data.data['artist']
+            }
+            
+            console.log('Server Response:', query_data);
+            // console.log('Server Response type:', typeof(response.data.data[0]));
+            setResultList(query_data);
+            console.log(resultList)
+        } catch (error) {
+            console.error('Search Error:', error);
+        }
+
+        setSearchPerformed(true);
+    };
+    
+    
+    const handleDropdownChange = (type) => {
+        setType(type);
+        setSearchPerformed(false); // Reset searchPerformed when dropdown changes
+        setResultList([])
+    };
+    
     
     return (
         <div className='Page'>
             <div className="UserPanel">
                 <div className='homeControlDiv'>
-                    <InputSubmit onSubmit={setQuery} />
-                    <LikeRecent
-                        userID={0}
-                        type={'Like'}
-                    />
-                    <LikeRecent
-                        userID={0}
-                        type={'Recent'}
-                    />
-                    
+                    <div className='SelectorAndInputDiv'>
+                        <InputSubmit onSubmit={(query) => fetchSearchResults(query)} />
+                        <div className='SelectorDiv'>
+                            <Dropdown options={types} onOptionSelected={handleDropdownChange} />
+                        </div>
+                    </div>
+                    <LikeRecent userID={0} type={'Like'} />
+                    <LikeRecent userID={0} type={'Recent'} />
+
                 </div>
             </div>
+
             <div className="MainDisplay">
-                {artists.map((artist) => (
-                    <ArtistCard 
-                        key={artist.artistId}
-                        artistId={artist.artistId}
-                        artistName={artist.artistName}
-                        artistImage={artist.artistImage}
-                    />
-                ))}
+                {searchPerformed && type === 'song' ? (
+                    // Render SingleSongCard for 'song' type
+                    resultList.map((song) => (
+                        <SingleSongCard 
+                            id={song.id}
+                            title={song.name}
+                        />
+                    ))
+                ) : (
+                    // Render GalleryCard for 'artist' or 'category' type
+                    resultList.map((result) => (
+                        <GalleryCard 
+                            type={type}
+                            id={result.id}
+                            name={result.name}
+                            image={result.cover}
+                        />
+                    ))
+                )}
             </div>
             <MusicPlayerBar />
         </div>

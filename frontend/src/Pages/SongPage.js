@@ -11,12 +11,13 @@ import '../StyleSheets/Song.css';
 
 function SongPage() {
   const navigate = useNavigate();
-  const {songId} = useParams();
+
+  const {id} = useParams();
   const lyricsRef = useRef(null);
 
   useEffect(() => {
     fetchSong();
-  }, [songId]);
+  }, [id]);
 
   const { isPlaying, 
     TogglePlay, 
@@ -43,7 +44,7 @@ function SongPage() {
 
     const fetchSong = async () => {
 
-        const songURL = 'http://localhost:4000/song/' + songId;
+        const songURL = 'http://localhost:4000/song/' + id;
         console.log('Fetching search results from:', songURL);
     
         try {

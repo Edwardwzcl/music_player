@@ -1,56 +1,54 @@
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
 import MusicPlayerBar from '../Components/MusicPlayerBar';
-
-import '../StyleSheets/Page.css';
 import LikeRecent from '../Components/LikeRecent';
 import InputSubmit from "../Components/InputSubmit";
-import SingleSongCard from '../Components/SingleSongCard';
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import '../StyleSheets/Home.css';
 import axios from 'axios';
+import SingleSongCard from '../Components/SingleSongCard';
+import GalleryCard from '../Components/GalleryCard';
 
-function ArtistPage() {
+function CategoryPage(categoryId, name, image) {
     const navigate = useNavigate();
-    const { id } = useParams(); // Access the id parameter from the URL
+
+    const handleClick = () => {
+        navigate('/');
+    }
+
     const [songs, setSongs] = useState([
         { id: 0, title: 'Test song', authors: "unknown"},
     ]);
 
-    const [info, setInfo] = useState({})
-    // Rest of your component code...
 
-    useEffect(() => {
-        // Fetch data based on the id parameter
-        fetchSongs()
-
-        // Additional useEffect logic as needed...
-    }, [id]);
-    
-    const navigateToHome = () => {
-        navigate('/');
-    }
-
-
-    
-    const fetchSongs = async () => {
-        const url = `http://localhost:4000/artist/${id}`;
+    const fetchSongUnderCategories = async () => {
+        const baseUrl = 'http://localhost:8080/api/search';
     
         // Create an object to hold the parameters
+        const queryParams = {
+            query: categoryId,
+        };
     
-        console.log('Fetching from:', url);
+        
+        // Convert the object to a URL-encoded query string
+        const queryString = new URLSearchParams(queryParams).toString();
+    
+        // Construct the full URL with the query string
+        const url = `${baseUrl}?${queryString}`;
+    
+        console.log('Fetching search results from:', url);
     
         try {
             const response = await axios.get(url);
-            const query_data = response.data.data
+            const query_data = response.data.result
             console.log('Server Response:', query_data);
-            setSongs(query_data.list)
-            setInfo(query_data.info)
-
-            setSongs(query_data.list);
+            // console.log('Server Response type:', typeof(response.data.data[0]));
+            setSongs(query_data);
         } catch (error) {
             console.error('Search Error:', error);
         }
     };
+    
     
     return (
         <div className='HomePage'>
@@ -65,20 +63,19 @@ function ArtistPage() {
                         userID={0}
                         type={'Recent'}
                     />
-                    <button onClick={navigateToHome}>Back to Home</button>
+                    
                 </div>
+                <button onClick={handleClick}>Back to Home</button>
             </div>
-            
+                
             <div className="MainDisplay">
-                <div className="artistInfoContainer">
-                    <img className="artistImage" src={info.cover} alt="Artist Image" />
-                    <div className="artistName">{info.name}</div>
+                <div>
+                    <p>Category</p>
                 </div>
                 {songs.map((song) => (
                     <SingleSongCard 
-                        key={song.songId}
-                        id={song.songId}
-                        title={song.songName}
+                        id={song.id}
+                        title={song.title}
                     />
                 ))}
             </div>
@@ -87,5 +84,4 @@ function ArtistPage() {
     );
 }
 
-export default ArtistPage;
- 
+export default CategoryPage;
