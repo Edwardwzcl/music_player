@@ -8,7 +8,7 @@ import SingleSongCard from '../Components/SingleSongCard';
 import ArtistCard from '../Components/ArtistCard';
 
 import '../StyleSheets/Home.css';
-//import '../StyleSheets/Page.css';
+import '../StyleSheets/Page.css';
 import InputSubmit from "../Components/InputSubmit";
 import LikeRecent from '../Components/LikeRecent';
 import Dropdown from '../Components/Dropdown';
@@ -16,7 +16,7 @@ import axios from 'axios';
 
 function HomePage() {
     const [query, setQuery] = useState('');
-    const [type, setType] = useState('category');
+    const [type, setType] = useState('song');
     const types = ["song", "artist"]
     const [searchPerformed, setSearchPerformed] = useState(false);
     const [resultList, setResultList] = useState([
