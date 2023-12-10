@@ -120,7 +120,7 @@ function SongPage() {
 
   return (
           <div className="SongPage">
-            <button onClick={() => navigate('/')}>Home</button>
+            <button className='navControl' onClick={() => navigate('/')}>Home</button>
             <img src={song.songImage} alt={song.songName} />
             <h1>{song.songName}</h1>
             <h2>{song.artistName}</h2>

@@ -21,7 +21,7 @@
     top: 15%;
     left: 60%;
     transform: translate(-50%, -50%);
-    font-size: 10vh;
+    font-size: 6vh;
     font-weight: 350;
     color: #fff2e6;
 }
@@ -31,7 +31,7 @@
     top: 30%;
     left: 60%;
     transform: translate(-50%, -50%);
-    font-size: 5vh;
+    font-size: 4vh;
     font-weight: 350;
     color: #fff2e6;
 }
@@ -64,3 +64,17 @@
     }
 }
 
+.SongPage .navControl {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 7vw;
+    height: 5vh;
+    background-color: #fff2e6;
+    border: none;
+    border-radius: 5px;
+    font-size: 2vh;
+    font-weight: 350;
+    color: #3988C7;
+    cursor: pointer;
+}
