@@ -20,8 +20,8 @@ function MusicPlayerBar() {
         playlist,
         setPlaylist, 
         Insert,
-        currentTrackIndex,
-        setCurrentTrackIndex } = useContext(MusicContext);
+        PlayNext,
+        PlayPrev } = useContext(MusicContext);
 
     const validatedCurrentTime = isNaN(currentTime) ? 0 : currentTime;
  
@@ -36,13 +36,11 @@ function MusicPlayerBar() {
     };
 
     const handleNext = () => {
-        const nextIndex = (currentTrackIndex + 1) % playlist.length;
-        setCurrentTrackIndex(nextIndex);
+        PlayNext();
     };
 
     const handlePrevious = () => {
-        const prevIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-        setCurrentTrackIndex(prevIndex);
+        PlayPrev();
     };
 
     const handleLike = () => {
@@ -55,12 +53,12 @@ function MusicPlayerBar() {
   //     console.log("123", TogglePlay);
   // }, []);
   const handleAddAmp = () => {
-    Insert(amp);
+    Insert(1357375695);
 };
 
-const handleResetPlaylist = () => {
-    setPlaylist([sop, "https://p.scdn.co/mp3-preview/b8372b1a0b8d09a5004388a654f29bef6bc37021?cid=bb898c85749e404793197d4f2fc2208b"]);
-};
+  const handleResetPlaylist = () => {
+      setPlaylist([1985364667, 2096354343]);
+  };
 
     return (
         <div className="music-player-bar">

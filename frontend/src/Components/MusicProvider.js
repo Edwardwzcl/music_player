@@ -1,12 +1,13 @@
 import React, { createContext, useState, useRef, useEffect } from 'react';
-
+import axios from 'axios';
 import sop from '../Assets/SeaOfProblems.mp3';
 import amp from '../Assets/AllMyPeople.mp3';
 
 export const MusicContext = createContext();
 
 export const MusicProvider = ({ children }) => {
-    const [playlist, setPlaylist] = useState(["https://p.scdn.co/mp3-preview/b8372b1a0b8d09a5004388a654f29bef6bc37021?cid=bb898c85749e404793197d4f2fc2208b"]);
+    const [playlist, setPlaylist] = useState([]);
+    const [currSong, setCurrSong] = useState({});
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
     const [isPlaying, setIsPlaying] = useState(false);
@@ -16,6 +17,7 @@ export const MusicProvider = ({ children }) => {
 
     // input
     const TogglePlay = () => {
+        // if no source, return
         if (!playlist[currentTrackIndex] || !audioRef.current) return;
         if (isPlaying) {
             audioRef.current.pause();
@@ -43,53 +45,155 @@ export const MusicProvider = ({ children }) => {
         else
         {
             playlist.splice(newIndex, 0, newTrack);
-            setCurrentTrackIndex(newIndex);
+            console.log(playlist);
+            PlayNext();
+        }
+    };
+
+    const PlayNext = async () => {
+        if (!playlist[currentTrackIndex] || !audioRef.current) return;
+        const nextIndex = (currentTrackIndex + 1) % playlist.length;
+        setCurrentTrackIndex(nextIndex);
+        console.log("index", nextIndex)
+        const currentAudio = audioRef.current;
+        if (!playlist[nextIndex] || !currentAudio) return;
+        
+        SeekTowards(0);
+        setIsPlaying(false);
+        audioRef.current.pause();
+
+        const songURL = `http://localhost:4000/song/${playlist[nextIndex]}`;
+        console.log('Fetching search results from:', songURL);
+
+        try {
+            const response = await axios.get(songURL);
+            const songData = response.data.data;
+            console.log('Server Response:', songData);
+
+            setCurrSong({
+                songId: songData.songId,
+                songName: songData.songName,
+                songImage: songData.cover,
+                url: songData.url,
+                artistId: songData.artistId,
+                artistName: songData.artistName,
+                artistImage: songData.cover,
+                lyric: songData.lyric
+                });
+
+            currentAudio.src = songData.url;
+            
+        } catch (error) {
+            console.error('Search Error:', error);
+        }
+        
+    };
+
+    const PlayPrev = async () => {
+        if (!playlist[currentTrackIndex] || !audioRef.current) return;
+        const nextIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+        setCurrentTrackIndex(nextIndex);
+        console.log("index", nextIndex)
+        const currentAudio = audioRef.current;
+        if (!playlist[nextIndex] || !currentAudio) return;
+        
+        SeekTowards(0);
+        setIsPlaying(false);
+        audioRef.current.pause();
+
+        const songURL = `http://localhost:4000/song/${playlist[nextIndex]}`;
+        console.log('Fetching search results from:', songURL);
+
+        try {
+            const response = await axios.get(songURL);
+            const songData = response.data.data;
+            console.log('Server Response:', songData);
+
+            setCurrSong({
+                songId: songData.songId,
+                songName: songData.songName,
+                songImage: songData.cover,
+                url: songData.url,
+                artistId: songData.artistId,
+                artistName: songData.artistName,
+                artistImage: songData.cover,
+                lyric: songData.lyric
+                });
+
+            currentAudio.src = songData.url;
+            
+        } catch (error) {
+            console.error('Search Error:', error);
         }
         
     };
 
 
 
-    // Load new track when currentTrackIndex changes
     useEffect(() => {
-        const currentAudio = audioRef.current;
-        if (currentAudio && playlist[currentTrackIndex]) {
-            currentAudio.src = playlist[currentTrackIndex];
-            setCurrentTime(0);
-            if (isPlaying) {
-                currentAudio.play();
+        const fetchSongData = async () => {
+            console.log("playList", playlist)
+            const currentAudio = audioRef.current;
+            if (!playlist[0]) return;
+            SeekTowards(0);
+            setIsPlaying(false);
+            audioRef.current.pause();
+    
+            const songURL = `http://localhost:4000/song/${playlist[0]}`;
+            console.log('Fetching search results from:', songURL);
+    
+            try {
+                const response = await axios.get(songURL);
+                const songData = response.data.data;
+                console.log('Server Response:', songData);
+    
+                setCurrSong({
+                    songId: songData.songId,
+                    songName: songData.songName,
+                    songImage: songData.cover,
+                    url: songData.url,
+                    artistId: songData.artistId,
+                    artistName: songData.artistName,
+                    artistImage: songData.cover,
+                    lyric: songData.lyric
+                  });
+    
+                currentAudio.src = songData.url;
+            } catch (error) {
+                console.error('Search Error:', error);
             }
-        }
-    }, [currentTrackIndex, playlist]);
+        };
+        setCurrentTrackIndex(0);
+        fetchSongData();
+    }, [playlist]);    
 
     useEffect(() => {
         const currentAudio = audioRef.current;
-        if (currentAudio) {
-            const handleTimeUpdate = () => {
-                if (!isFinite(currentAudio.duration)) return;
-                const newCurrentTime = (currentAudio.currentTime / currentAudio.duration) * 100;
-                setCurrentTime(newCurrentTime);
-                setRealTime(currentAudio.currentTime);
-            };
+        currentAudio.addEventListener('timeupdate', handleTimeUpdate);
 
-            const handleEnded = () => {
-                setCurrentTime(0);
-                setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % playlist.length);
-            };
+        return () => {
+            currentAudio.removeEventListener('timeupdate', handleTimeUpdate);
+        };
+    }, [])
 
-            currentAudio.addEventListener('timeupdate', handleTimeUpdate);
-            currentAudio.addEventListener('ended', handleEnded);
+    const handleTimeUpdate = () => {
+        const currentAudio = audioRef.current;
+        if (!isFinite(currentAudio.duration)) return;
+        const newCurrentTime = (currentAudio.currentTime / currentAudio.duration) * 100;
+        setCurrentTime(newCurrentTime);
+        setRealTime(currentAudio.currentTime);
+    };
 
-            return () => {
-                currentAudio.removeEventListener('timeupdate', handleTimeUpdate);
-                currentAudio.removeEventListener('ended', handleEnded);
-            };
-        }
-    }, [currentTrackIndex, playlist.length]);
+    // const handleEnded = () => {
+    //     setCurrentTime(0);
+    //     setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % playlist.length);
+    // };
+
 
 
     return (
         <MusicContext.Provider value={{ 
+            currSong,
             isPlaying, 
             TogglePlay, 
             currentTime, 
@@ -97,9 +201,10 @@ export const MusicProvider = ({ children }) => {
             SeekTowards, 
             playlist,
             setPlaylist, 
-            Insert,
             currentTrackIndex,
-            setCurrentTrackIndex
+            Insert,
+            PlayNext,
+            PlayPrev
         }}>
             <audio ref={audioRef} hidden />
             {children}
