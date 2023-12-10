@@ -25,7 +25,7 @@ function LoginPage() {
 
   return (
     <div className="fullscreen">
-      <h1 className="title">Olympics Gateway</h1>
+      <h1 className="title">Music Player</h1>
       <img src={ image1 } alt="Background 1" className="background-img" />
       <img src={ image2 } alt="Background 2" className="background-img" />
       <img src={ image3 } alt="Background 3" className="background-img" />
