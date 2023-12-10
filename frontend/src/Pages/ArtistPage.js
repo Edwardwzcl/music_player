@@ -33,7 +33,7 @@ function ArtistPage() {
 
     
     const fetchSongs = async () => {
-        const url = `http://localhost:4000/artist/${id}`;
+        const url = `http://3.139.233.26:4000/artist/${id}`;
     
         // Create an object to hold the parameters
     
