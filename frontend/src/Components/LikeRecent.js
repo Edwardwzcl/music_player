@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../StyleSheets/LikeRecent.css';
+import axios from 'axios';
 
-function LikeRecent({ userID, type }) {
+
+function LikeRecent({ userName, type }) {
     const navigate = useNavigate();
 
     const navigateToListView = () => {
@@ -14,7 +16,6 @@ function LikeRecent({ userID, type }) {
         }
     };
 
-    
 
     const displayName = type
 

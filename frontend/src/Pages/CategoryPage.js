@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
 import MusicPlayerBar from '../Components/MusicPlayerBar';
 import LikeRecent from '../Components/LikeRecent';
@@ -12,6 +12,8 @@ import GalleryCard from '../Components/GalleryCard';
 function CategoryPage(categoryId, name, image) {
     const navigate = useNavigate();
 
+    const { id } = useParams();
+
     const handleClick = () => {
         navigate('/');
     }
@@ -22,7 +24,7 @@ function CategoryPage(categoryId, name, image) {
 
 
     const fetchSongUnderCategories = async () => {
-        const baseUrl = 'http://localhost:8080/api/search';
+        const baseUrl = 'http://3.139.233.26:8080/api/search';
     
         // Create an object to hold the parameters
         const queryParams = {

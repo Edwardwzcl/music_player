@@ -46,7 +46,7 @@ function SongPage() {
 
     // const fetchSong = async () => {
 
-    //     const songURL = 'http://localhost:4000/song/' + id;
+    //     const songURL = 'http://3.139.233.26:4000/song/' + id;
     //     console.log('Fetching search results from:', songURL);
     
     //     try {
