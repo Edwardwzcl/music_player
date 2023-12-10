@@ -1,6 +1,6 @@
 .UserPanel {
     display: block;
-    width: 15vw;
+    width: 20vw;
     height: 100vh;
     position: fixed;
     background-color: #3988C7;
@@ -9,7 +9,7 @@
 
 .MainDisplay {
     display: block;
-    width: 85vw;
+    width: 79vw;
     height: 100vh;
     right: 0;
     position: fixed;

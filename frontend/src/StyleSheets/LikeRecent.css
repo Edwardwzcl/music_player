@@ -1,6 +1,6 @@
 /* Style for the card container */
 .LRCard {
-    background-color: #f2f2f2; /* Light grey background */
+    background-color: #fff2e6; /* Light grey background */
     border: 1px solid #ddd; /* Light grey border */
     border-radius: 8px; /* Rounded corners */
     /*padding: 10px; /* Spacing inside the card */
@@ -29,7 +29,7 @@
 .LRCard h2 span {
     cursor: pointer;
     color: #0056b3; /* Blue color to indicate it is clickable */
-    font-size: 16px;
+    font-size: 80%;
 }
 
 

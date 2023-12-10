@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faForward, faBackward } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons'; // Make sure you have this
-
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import sop from '../Assets/SeaOfProblems.mp3';
 import amp from '../Assets/AllMyPeople.mp3';
 
@@ -13,7 +14,9 @@ import { MusicContext } from './MusicProvider';
 import '../StyleSheets/MusicPlayerBar.css'; // Make sure to import the CSS
 
 function MusicPlayerBar() {
-    const { isPlaying, 
+    const { 
+        currSong,
+        isPlaying, 
         TogglePlay, 
         currentTime, 
         SeekTowards, 
@@ -22,6 +25,8 @@ function MusicPlayerBar() {
         Insert,
         PlayNext,
         PlayPrev } = useContext(MusicContext);
+
+    const navigate = useNavigate();
 
     const validatedCurrentTime = isNaN(currentTime) ? 0 : currentTime;
  
@@ -43,11 +48,21 @@ function MusicPlayerBar() {
         PlayPrev();
     };
 
-    const handleLike = () => {
+    const handleLike = async () => {
         setIsLiked(!isLiked);
+        console.log('Sending Like request', currSong.songId);
+        const songURL = `http://localhost:4000/song/${currSong.songId}`;
+        try {
+          const response = await axios.post(songURL);
+          const songData = response.data.data;
+          console.log('Server Response:', songData);          
+      } catch (error) {
+          console.error('Search Error:', error);
+      }
     };
-
+    
     const likeIcon = isLiked ? faSolidHeart : faRegularHeart;
+
 
   //   useEffect(() => {
   //     console.log("123", TogglePlay);
@@ -75,8 +90,8 @@ function MusicPlayerBar() {
               <button onClick={handleLike}>
                 <FontAwesomeIcon icon={likeIcon}/>              
               </button>
-              <button onClick={handleAddAmp}>1"</button>
-            <button onClick={handleResetPlaylist}>R</button>
+              <button onClick={() => navigate('/song')}>Details</button>
+            {/* <button onClick={handleResetPlaylist}>R</button> */}
             </div>
             <input 
                 type="range" 
