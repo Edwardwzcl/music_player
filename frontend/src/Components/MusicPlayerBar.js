@@ -52,7 +52,7 @@ function MusicPlayerBar() {
     const handleLike = async () => {
         setIsLiked(!isLiked);
         console.log('Sending Like request', currSong.songId);
-        const songURL = `http://localhost:4000/song/${currSong.songId}`;
+        const songURL = `http://3.138.175.21:4000/song/${currSong.songId}`;
         try {
           const response = await axios.post(songURL);
           const songData = response.data.data;

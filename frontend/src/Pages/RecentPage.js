@@ -23,8 +23,8 @@ function RecentPage() {
 
     
     const fetchRecent = async (username) => {
-        // const url = `http://3.139.233.26:4000/recent?username=${user.username}`;
-        const url = `http://3.139.233.26:4000/recent`
+        // const url = `http://3.138.175.21:4000/recent?username=${user.username}`;
+        const url = `http://3.138.175.21:4000/recent`
     
         console.log('Fetching from:', url);
     

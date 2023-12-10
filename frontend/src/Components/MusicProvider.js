@@ -62,7 +62,7 @@ export const MusicProvider = ({ children }) => {
         setIsPlaying(false);
         audioRef.current.pause();
 
-        const songURL = `http://localhost:4000/song/${playlist[nextIndex]}`;
+        const songURL = `http://3.138.175.21:4000/song/${playlist[nextIndex]}`;
         console.log('Fetching search results from:', songURL);
 
         try {
@@ -101,7 +101,7 @@ export const MusicProvider = ({ children }) => {
         setIsPlaying(false);
         audioRef.current.pause();
 
-        const songURL = `http://localhost:4000/song/${playlist[nextIndex]}`;
+        const songURL = `http://3.138.175.21:4000/song/${playlist[nextIndex]}`;
         console.log('Fetching search results from:', songURL);
 
         try {
@@ -139,7 +139,7 @@ export const MusicProvider = ({ children }) => {
             setIsPlaying(false);
             audioRef.current.pause();
     
-            const songURL = `http://localhost:4000/song/${playlist[0]}`;
+            const songURL = `http://3.138.175.21:4000/song/${playlist[0]}`;
             console.log('Fetching search results from:', songURL);
     
             try {
