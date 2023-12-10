@@ -53,40 +53,11 @@ function MusicPlayerBar() {
   //     console.log("123", TogglePlay);
   // }, []);
   const handleAddAmp = () => {
-    Insert({
-      songId: 1357375695,
-      songName: "All My People",
-      songImage: '',
-      url: amp,
-      artistId: 0,
-      artistName: '',
-      artistImage: '',
-      lyric: ""
-    });
+    Insert(1357375695);
 };
 
   const handleResetPlaylist = () => {
-      setPlaylist([
-        {
-          songId: 1357375695,
-          songName: "Sea of Problems",
-          songImage: '',
-          url: sop,
-          artistId: 0,
-          artistName: '',
-          artistImage: '',
-          lyric: ""
-        },
-        {
-          songId: 1357375695,
-          songName: "233",
-          songImage: '',
-          url: 'https://p.scdn.co/mp3-preview/b8372b1a0b8d09a5004388a654f29bef6bc37021?cid=bb898c85749e404793197d4f2fc2208b',
-          artistId: 0,
-          artistName: '',
-          artistImage: '',
-          lyric: ""
-        }]);
+      setPlaylist([1985364667, 2096354343]);
   };
 
     return (

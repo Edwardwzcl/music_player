@@ -19,7 +19,9 @@ function SongPage() {
   //   fetchSong();
   // }, [id]);
 
-  const { isPlaying, 
+  const {
+    currSong, 
+    isPlaying, 
     TogglePlay, 
     currentTime, 
     realTime,
@@ -33,7 +35,7 @@ function SongPage() {
   const [song, setSong] = useState(
     {
       songId: 1357375695,
-      songName: 'Test Song',
+      songName: 'Song Page',
       songImage: 'https://via.placeholder.com/150',
       url: '',
       artistId: 0,
@@ -42,35 +44,35 @@ function SongPage() {
       lyric: ''
     });
 
-  //   const fetchSong = async () => {
+    // const fetchSong = async () => {
 
-  //       const songURL = 'http://localhost:4000/song/' + id;
-  //       console.log('Fetching search results from:', songURL);
+    //     const songURL = 'http://localhost:4000/song/' + id;
+    //     console.log('Fetching search results from:', songURL);
     
-  //       try {
-  //           const response = await axios.get(songURL);
-  //           const songData = response.data.data;
-  //           console.log('Server Response:', songData);
-  //           setSong({
-  //             songId: songData.songId,
-  //             songName: songData.songName,
-  //             songImage: songData.cover,
-  //             source: songData.url,
-  //             artistId: songData.artistId,
-  //             artistName: songData.artistName,
-  //             artistImage: songData.cover,
-  //             lyric: songData.lyric
-  //           });
-  //           Insert(songData.url);
-  //       } catch (error) {
-  //           console.error('Search Error:', error);
-  //       }
-  //   };
+    //     try {
+    //         const response = await axios.get(songURL);
+    //         const songData = response.data.data;
+    //         console.log('Server Response:', songData);
+    //         setSong({
+    //           songId: songData.songId,
+    //           songName: songData.songName,
+    //           songImage: songData.cover,
+    //           url: songData.url,
+    //           artistId: songData.artistId,
+    //           artistName: songData.artistName,
+    //           artistImage: songData.cover,
+    //           lyric: songData.lyric
+    //         });
+    //         Insert(songData.url);
+    //     } catch (error) {
+    //         console.error('Search Error:', error);
+    //     }
+    // };
 
   useEffect(() => {
-    if (!playlist[currentTrackIndex] || !playlist[currentTrackIndex]['url']) return;
-    setSong(playlist[currentTrackIndex]);
-  }, [currentTrackIndex, isPlaying, playlist]);
+    if (!playlist[currentTrackIndex]) return;
+    setSong(currSong);
+  }, [currSong]);
 
   const parselyric = (lyric) => {
     if (!lyric || lyric.length === 0) return [];
@@ -102,15 +104,15 @@ function SongPage() {
     // Calculate the scroll position - this is a placeholder and needs actual logic
     // based on your layout, font size, etc.
     return currentLineIndex * 20; // Assuming each line takes up 20px
-};
-useEffect(() => {
-  const parsedlyric = parselyric(song.lyric);
-  const scrollPosition = findScrollPosition(realTime, parsedlyric);
+  };
+  useEffect(() => {
+    const parsedlyric = parselyric(song.lyric);
+    const scrollPosition = findScrollPosition(realTime, parsedlyric);
 
-  if (lyricRef.current) {
-      lyricRef.current.scrollTop = scrollPosition;
-  }
-}, [realTime, song.lyric]);
+    if (lyricRef.current) {
+        lyricRef.current.scrollTop = scrollPosition;
+    }
+  }, [realTime, song.lyric]);
 
 
   
