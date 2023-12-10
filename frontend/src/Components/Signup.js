@@ -63,7 +63,7 @@ function Signup() {
   const handleVerificationSubmit = async () => {
     try {
       // Replace with the actual URL of your code verification API
-      const verificationResponse = await axios.post('http://3.138.175.21:8080/api/user/code', {
+      const verificationResponse = await axios.post('http://3.138.175.21:4000/user/code', {
         code: verificationCode,
       });
 
