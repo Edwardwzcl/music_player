@@ -24,7 +24,7 @@ function CategoryPage(categoryId, name, image) {
 
 
     const fetchSongUnderCategories = async () => {
-        const baseUrl = 'http://3.139.233.26:8080/api/search';
+        const baseUrl = 'http://3.138.175.21:8080/api/search';
     
         // Create an object to hold the parameters
         const queryParams = {

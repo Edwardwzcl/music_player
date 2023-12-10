@@ -41,7 +41,7 @@ function Signup() {
 
     try {
       // Replace with the actual URL of your sign-up API
-      const response = await axios.post('http://localhost:8080/api/registration', {
+      const response = await axios.post('http://3.138.175.21:8080/api/registration', {
         email,
         username,
         password

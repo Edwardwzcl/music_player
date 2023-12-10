@@ -93,7 +93,7 @@ function HomePage() {
     }, []);
 
     // const fetchCategories = async () => {
-    //     const url = 'http://3.139.233.26:4000/genre';
+    //     const url = 'http://3.138.175.21:4000/genre';
     
     //     // Create an object to hold the parameters
     
@@ -111,7 +111,7 @@ function HomePage() {
     // };
 
     const fetchSearchResults = async (query) => {
-        const url = 'http://3.139.233.26:4000/search';
+        const url = 'http://3.138.175.21:4000/search';
         console.log('Fetching search results from:', url, query);
     
         try {

@@ -23,8 +23,8 @@ function LikePage() {
 
     
     const fetchLikes = async () => {
-        // const url = `http://3.139.233.26:4000/like?username=${user.username}`;
-        const url = `http://3.139.233.26:4000/like`;
+        // const url = `http://3.138.175.21:4000/like?username=${user.username}`;
+        const url = `http://3.138.175.21:4000/like`;
     
         console.log('Fetching from:', url);
     
