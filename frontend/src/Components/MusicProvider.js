@@ -19,6 +19,11 @@ export const MusicProvider = ({ children }) => {
     const TogglePlay = () => {
         // if no source, return
         if (!playlist[currentTrackIndex] || !audioRef.current) return;
+        if (currSong.url === '') // alert
+        {
+            alert("This song is not available for preview");
+            return;
+        }
         if (isPlaying) {
             audioRef.current.pause();
         } else {
