@@ -12,7 +12,7 @@ import '../StyleSheets/Song.css';
 function SongPage() {
   const navigate = useNavigate();
 
-  // const {id} = useParams();
+  const {id} = useParams();
   const lyricRef = useRef(null);
 
   // useEffect(() => {
