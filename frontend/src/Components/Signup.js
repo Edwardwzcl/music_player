@@ -43,10 +43,15 @@ function Signup() {
 
     try {
       // Replace with the actual URL of your sign-up API
-      const response = await axios.post('http://3.138.175.21:4000/user/register', {
-        email,
-        username,
-        password,
+      const formData = new URLSearchParams();
+      formData.append('email', email);
+      formData.append('username', username);
+      formData.append('password', password);
+      
+      const response = await axios.post('http://3.138.175.21:4000/user/register', formData.toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
       });
 
       if (response.status === 200) {

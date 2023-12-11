@@ -26,9 +26,14 @@ function Login() {
     }
 
     try {
-      const response = await axios.post('http://3.138.175.21:4000/login', {
-        email,
-        password
+      const formData = new URLSearchParams();
+      formData.append('email', email);
+      formData.append('password', password);
+      
+      const response = await axios.post('http://3.138.175.21:4000/user/login', formData.toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
       });
       console.log('Server Response:', response.data);
       const { username, message } = response.data;
