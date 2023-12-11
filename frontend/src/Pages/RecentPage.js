@@ -38,6 +38,10 @@ function RecentPage() {
             console.error('Search Error:', error);
         }
     };
+
+    useEffect(() => {
+        fetchRecent();
+    }, []);
     
     return (
         <div className='Page'>

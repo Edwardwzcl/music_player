@@ -89,26 +89,26 @@ function HomePage() {
 
     React.useEffect(() => {
         // Query all the categories at start
-        //fetchCategories()
+        fetchCategories()
     }, []);
 
-    // const fetchCategories = async () => {
-    //     const url = 'http://3.138.175.21:4000/genre';
+    const fetchCategories = async () => {
+        const url = 'http://3.138.175.21:4000/genre';
     
-    //     // Create an object to hold the parameters
+        // Create an object to hold the parameters
     
-    //     console.log('Fetching from:', url);
+        console.log('Fetching from:', url);
     
-    //     try {
-    //         const response = await axios.get(url);
-    //         const query_data = response.data.data
-    //         console.log('Server Response:', query_data);
-    //         // console.log('Server Response type:', typeof(response.data.data[0]));
-    //         setResultList(query_data);
-    //     } catch (error) {
-    //         console.error('Search Error:', error);
-    //     }
-    // };
+        try {
+            const response = await axios.get(url);
+            const query_data = response.data.data
+            console.log('Server Response:', query_data);
+            // console.log('Server Response type:', typeof(response.data.data[0]));
+            setResultList(query_data);
+        } catch (error) {
+            console.error('Search Error:', error);
+        }
+    };
 
     const fetchSearchResults = async (query) => {
         const url = 'http://3.138.175.21:4000/search';

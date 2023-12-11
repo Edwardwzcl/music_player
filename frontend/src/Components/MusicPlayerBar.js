@@ -51,6 +51,7 @@ function MusicPlayerBar() {
 
     const handleLike = async () => {
         setIsLiked(!isLiked);
+        if (!currSong.songId) return;
         console.log('Sending Like request', currSong.songId);
         const songURL = `http://3.138.175.21:4000/song/${currSong.songId}`;
         try {

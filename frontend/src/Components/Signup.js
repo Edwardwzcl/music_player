@@ -56,7 +56,8 @@ function Signup() {
 
       if (response.status === 200) {
         // Show verification modal
-        setShowVerificationModal(true);
+        // setShowVerificationModal(true);
+        navigate('/');
       } else {
         alert(response.data.message);
       }
@@ -102,6 +103,9 @@ function Signup() {
           <input type="password" value={password} onChange={handlePasswordChange} />
         </div>
         <div className="labelledInput">
+          <label>length 8, upper, lower, number, special</label>
+        </div>
+        <div className="labelledInput">
           <label>Confirm Password</label>
           <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
         </div>
@@ -113,7 +117,7 @@ function Signup() {
         <div className="verification-modal">
           <label>Enter Verification Code</label>
           <input type="text" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} />
-          <button onClick={handleVerificationSubmit}>Confirm</button>
+          {/* <button onClick={handleVerificationSubmit}>Confirm</button> */}
         </div>
       )}
     </>
