@@ -28,8 +28,8 @@ var allowCrossDomain = function (req, res, next) {
 app.use(allowCrossDomain);
 
 const AWS = require('aws-sdk');
-AWS.config.update({accessKeyId: 'AKIAT6MIC35AZ5RV4FN5',
-    secretAccessKey:'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',
+AWS.config.update({accessKeyId: 'myawsid',
+    secretAccessKey:'myawskey',
     region:'us-east-2'});
 
 // Use the body-parser package in our application
