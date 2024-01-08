@@ -1,37 +1,29 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../StyleSheets/SingleSongCard.css';
 import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
 
-function SingleSongCard({ id, title, authors}) {
+function SingleSongCard({ id, title, artist}) {
     const navigate = useNavigate();
+
+    if (!artist) {
+        artist = '';
+    }
 
     const navigateToSong = () => {
         Insert(id)
         // Perform action on click
-        console.log(` ${title} clicked`);
+        console.log(` ${title} ${id} clicked`);
+
         navigate(`/song`);
     };
 
-    const {
-        currSong, 
-        isPlaying, 
-        TogglePlay, 
-        currentTime, 
-        realTime,
-        SeekTowards, 
-        playlist,
-        setPlaylist, 
-        Insert,
-        currentTrackIndex,
-        setCurrentTrackIndex } = useContext(MusicContext);
+    const { Insert} = useContext(MusicContext);
 
 
     return (
         <div className='SingleSongCard'>
-            <h2>
-                <span onClick={navigateToSong}>{title}</span>
-            </h2>
+            <button onClick={navigateToSong}>{title + "   " + artist}</button>
         </div>
     );
 }

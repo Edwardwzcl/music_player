@@ -1,7 +1,5 @@
 import React, { createContext, useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import sop from '../Assets/SeaOfProblems.mp3';
-import amp from '../Assets/AllMyPeople.mp3';
 
 export const MusicContext = createContext();
 
@@ -19,7 +17,7 @@ export const MusicProvider = ({ children }) => {
     const TogglePlay = () => {
         // if no source, return
         if (!playlist[currentTrackIndex] || !audioRef.current) return;
-        if (!currSong.url) // alert
+        if (!currSong || !currSong.url || currSong.url==='') // alert
         {
             alert("This song is not available for preview");
             return;
@@ -130,7 +128,7 @@ export const MusicProvider = ({ children }) => {
         } catch (error) {
             console.error('Search Error:', error);
         }
-        
+        //123
     };
 
 
@@ -139,8 +137,12 @@ export const MusicProvider = ({ children }) => {
         const fetchSongData = async () => {
             console.log("playList", playlist)
             const currentAudio = audioRef.current;
-            if (!playlist[0]) return;
-            SeekTowards(0);
+            if (!playlist[0])
+            {
+                console.log("first song not valid")
+                return;
+            }
+            setCurrentTime(0);
             setIsPlaying(false);
             audioRef.current.pause();
     
@@ -166,6 +168,7 @@ export const MusicProvider = ({ children }) => {
                 currentAudio.src = songData.url;
             } catch (error) {
                 console.error('Search Error:', error);
+                //123
             }
         };
         setCurrentTrackIndex(0);

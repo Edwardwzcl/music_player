@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useState, useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { UserContext } from '../Components/UserProvider';
 
 export default function useAuthRedirect() {
@@ -8,8 +8,8 @@ export default function useAuthRedirect() {
     // check is user.username is null
     useEffect(() => {
         if (user.username === null) {
-            console.log('Not logged in, redirecting...');
-            // navigate('/login');
+            console.log('Not logged in, redirecting to login page.');
+            navigate('/');
         }
-    }, [navigate]);
+    }, [navigate, user.username]);
 }

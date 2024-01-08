@@ -9,7 +9,8 @@ function Signup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
-  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  //const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const showVerificationModal = false;
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -43,15 +44,22 @@ function Signup() {
 
     try {
       // Replace with the actual URL of your sign-up API
-      const response = await axios.post('http://3.138.175.21:4000/user/register', {
-        email,
-        username,
-        password,
+      const formData = new URLSearchParams();
+      formData.append('email', email);
+      formData.append('username', username);
+      formData.append('password', password);
+      
+      const response = await axios.post('http://3.138.175.21:4000/user/register', formData.toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
       });
 
       if (response.status === 200) {
         // Show verification modal
-        setShowVerificationModal(true);
+        // setShowVerificationModal(true);
+        setUser({ username, email }); // Update the user context
+        navigate('/home');
       } else {
         alert(response.data.message);
       }
@@ -60,26 +68,26 @@ function Signup() {
     }
   };
 
-  const handleVerificationSubmit = async () => {
-    try {
-      // Replace with the actual URL of your code verification API
-      const verificationResponse = await axios.post('http://3.138.175.21:4000/user/code', {
-        code: verificationCode,
-      });
+  // const handleVerificationSubmit = async () => {
+  //   try {
+  //     // Replace with the actual URL of your code verification API
+  //     const verificationResponse = await axios.post('http://3.138.175.21:4000/user/code', {
+  //       code: verificationCode,
+  //     });
 
-      if (verificationResponse.status === 200) {
-        setUser({ username, email });
-        // Close the verification modal
-        setShowVerificationModal(false);
-        // Redirect to home page
-        navigate('/');
-      } else {
-        alert(verificationResponse.data.message);
-      }
-    } catch (error) {
-      console.error('Verification Error:', error);
-    }
-  };
+  //     if (verificationResponse.status === 200) {
+  //       setUser({ username, email });
+  //       // Close the verification modal
+  //       setShowVerificationModal(false);
+  //       // Redirect to home page
+  //       navigate('/');
+  //     } else {
+  //       alert(verificationResponse.data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('Verification Error:', error);
+  //   }
+  // };
 
   return (
     <>
@@ -97,6 +105,9 @@ function Signup() {
           <input type="password" value={password} onChange={handlePasswordChange} />
         </div>
         <div className="labelledInput">
+          <label>length 8, upper, lower, number, special</label>
+        </div>
+        <div className="labelledInput">
           <label>Confirm Password</label>
           <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
         </div>
@@ -108,7 +119,7 @@ function Signup() {
         <div className="verification-modal">
           <label>Enter Verification Code</label>
           <input type="text" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} />
-          <button onClick={handleVerificationSubmit}>Confirm</button>
+          {/* <button onClick={handleVerificationSubmit}>Confirm</button> */}
         </div>
       )}
     </>

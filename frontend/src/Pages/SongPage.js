@@ -1,18 +1,15 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
 
 import MusicPlayerBar from '../Components/MusicPlayerBar';
-import ScrollableParagraph from '../Components/ScrollableParagraph';
-import ArtistCard from '../Components/ArtistCard';
-
+import useAuthRedirect from '../Hooks/useAuthRedirect';
 import '../StyleSheets/Song.css';
 
 function SongPage() {
+  useAuthRedirect();
   const navigate = useNavigate();
 
-  const {id} = useParams();
   const lyricRef = useRef(null);
 
   // useEffect(() => {
@@ -21,16 +18,9 @@ function SongPage() {
 
   const {
     currSong, 
-    isPlaying, 
-    TogglePlay, 
-    currentTime, 
     realTime,
-    SeekTowards, 
     playlist,
-    setPlaylist, 
-    Insert,
-    currentTrackIndex,
-    setCurrentTrackIndex } = useContext(MusicContext);
+    currentTrackIndex} = useContext(MusicContext);
 
   const [song, setSong] = useState(
     {
@@ -72,7 +62,7 @@ function SongPage() {
   useEffect(() => {
     if (!playlist[currentTrackIndex]) return;
     setSong(currSong);
-  }, [currSong]);
+  }, [currSong, playlist, currentTrackIndex]);
 
   const parselyric = (lyric) => {
     if (!lyric || lyric.length === 0) return [];
@@ -120,7 +110,7 @@ function SongPage() {
 
   return (
           <div className="SongPage">
-            <button className='navControl' onClick={() => navigate('/')}>Home</button>
+            <button className='navControl' onClick={() => navigate('/home')}>Home</button>
             <img src={song.songImage} alt={song.songName} />
             <h1>{song.songName}</h1>
             <h2>{song.artistName}</h2>

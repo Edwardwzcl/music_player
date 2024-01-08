@@ -50,19 +50,10 @@
     font-weight: 250;
     color: #fff2e6;
     white-space: pre-wrap; /* Preserves line breaks and spaces */
-
-}
-
-.scrollable-paragraph {
-    overflow-y: scroll; /* or auto */
-    scrollbar-width: none; /* For Firefox */
-    -ms-overflow-style: none; /* For Internet Explorer and Edge */
-
-    /* For Webkit browsers like Chrome and Safari */
     &::-webkit-scrollbar {
-        display: none;
+            display: none;
+        }
     }
-}
 
 .SongPage .navControl {
     position: absolute;

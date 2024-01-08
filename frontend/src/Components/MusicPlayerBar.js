@@ -1,28 +1,25 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faForward, faBackward } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons'; // Make sure you have this
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import sop from '../Assets/SeaOfProblems.mp3';
-import amp from '../Assets/AllMyPeople.mp3';
 
 
 import { MusicContext } from './MusicProvider';
+import { UserContext } from './UserProvider';
 
 import '../StyleSheets/MusicPlayerBar.css'; // Make sure to import the CSS
 
 function MusicPlayerBar() {
+    const { user } = useContext(UserContext);
     const { 
         currSong,
         isPlaying, 
         TogglePlay, 
         currentTime, 
         SeekTowards, 
-        playlist,
-        setPlaylist, 
-        Insert,
         PlayNext,
         PlayPrev } = useContext(MusicContext);
 
@@ -51,12 +48,21 @@ function MusicPlayerBar() {
 
     const handleLike = async () => {
         setIsLiked(!isLiked);
-        console.log('Sending Like request', currSong.songId);
-        const songURL = `http://3.138.175.21:4000/song/${currSong.songId}`;
+        if (!currSong.songId) return;
+        
         try {
-          const response = await axios.post(songURL);
-          const songData = response.data.data;
-          console.log('Server Response:', songData);          
+          const songURL = `http://3.138.175.21:4000/song/${currSong.songId}`;
+          const body = {
+            username: user.username,
+            id: currSong.songId,
+            name: currSong.songName,
+            artistId: currSong.artistId,
+            artistName: currSong.artistName
+          };
+          console.log('Posting Like to:', songURL, 'with body:', body);
+          const response = await axios.post(songURL, body);
+          const likeResponse = response.data.data;
+          console.log('Server Response:', likeResponse);          
       } catch (error) {
           console.error('Search Error:', error);
       }
@@ -68,13 +74,13 @@ function MusicPlayerBar() {
   //   useEffect(() => {
   //     console.log("123", TogglePlay);
   // }, []);
-  const handleAddAmp = () => {
-    Insert(1357375695);
-};
+//   const handleAddAmp = () => {
+//     Insert(1357375695);
+// };
 
-  const handleResetPlaylist = () => {
-      setPlaylist([1985364667, 2096354343]);
-  };
+//   const handleResetPlaylist = () => {
+//       setPlaylist([1985364667, 2096354343]);
+//   };
 
     return (
         <div className="music-player-bar">
