@@ -1,11 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
+import React, { useState } from 'react';
 import useAuthRedirect from '../Hooks/useAuthRedirect';
 import MusicPlayerBar from '../Components/MusicPlayerBar';
 import GalleryCard from '../Components/GalleryCard';
 import SingleSongCard from '../Components/SingleSongCard';
-import ArtistCard from '../Components/ArtistCard';
 
 import '../StyleSheets/Home.css';
 import '../StyleSheets/Page.css';
@@ -15,7 +12,6 @@ import Dropdown from '../Components/Dropdown';
 import axios from 'axios';
 
 function HomePage() {
-    const [query, setQuery] = useState('');
     const [type, setType] = useState('song');
     const types = ["song", "artist"]
     const [searchPerformed, setSearchPerformed] = useState(false);
@@ -72,7 +68,7 @@ function HomePage() {
           type: "category",
           id: 5002,
           name: 'Classical',
-          image: 'https://www.shutterstock.com/image-photo/african-american-jazz-musician-playing-saxophone-257064301'
+          image: 'http://www.shutterstock.com/image-photo/african-american-jazz-musician-playing-saxophone-257064301'
         }
       ];
 
@@ -83,32 +79,31 @@ function HomePage() {
     // if username is null, redirect to login page
     useAuthRedirect();
 
-    const navigate = useNavigate();
 
     
 
     React.useEffect(() => {
         // Query all the categories at start
-        //fetchCategories()
+        fetchCategories()
     }, []);
 
-    // const fetchCategories = async () => {
-    //     const url = 'http://3.138.175.21:4000/genre';
+    const fetchCategories = async () => {
+        const url = 'http://3.138.175.21:4000/genre';
     
-    //     // Create an object to hold the parameters
+        // Create an object to hold the parameters
     
-    //     console.log('Fetching from:', url);
+        console.log('Fetching from:', url);
     
-    //     try {
-    //         const response = await axios.get(url);
-    //         const query_data = response.data.data
-    //         console.log('Server Response:', query_data);
-    //         // console.log('Server Response type:', typeof(response.data.data[0]));
-    //         setResultList(query_data);
-    //     } catch (error) {
-    //         console.error('Search Error:', error);
-    //     }
-    // };
+        try {
+            const response = await axios.get(url);
+            const query_data = response.data.data
+            console.log('Server Response:', query_data);
+            // console.log('Server Response type:', typeof(response.data.data[0]));
+            setResultList(query_data);
+        } catch (error) {
+            console.error('Search Error:', error);
+        }
+    };
 
     const fetchSearchResults = async (query) => {
         const url = 'http://3.138.175.21:4000/search';
@@ -116,11 +111,11 @@ function HomePage() {
     
         try {
             const response = await axios.post(url, {
-                    content: query
-                });
+                content: query
+            });
             
             let query_data;
-            if (type == "song") {
+            if (type === "song") {
                 query_data = response.data.data['songs']
             }
             else {
@@ -157,7 +152,7 @@ function HomePage() {
                         </div>
                     </div>
                     <LikeRecent userName={0} type={'Like'} />
-                    <LikeRecent userName={0} type={'Recent'} />
+                    {/* <LikeRecent userName={0} type={'Recent'} /> */}
 
                 </div>
             </div>
@@ -169,13 +164,14 @@ function HomePage() {
                         <SingleSongCard 
                             id={song.id}
                             title={song.name}
+                            artist={song.artistName}
                         />
                     ))
                 ) : (
                     // Render GalleryCard for 'artist' or 'category' type
                     resultList.map((result) => (
                         <GalleryCard 
-                            type={type}
+                            type={searchPerformed ? type : 'category'}
                             id={result.id}
                             name={result.name}
                             image={result.cover}

@@ -1,0 +1,26 @@
+image: node:latest
+
+variables:
+  PUBLIC_URL: /music_player
+
+cache:
+  paths:
+    - frontend/node_modules/
+
+stages:
+  - deploy
+
+pages:
+  stage: deploy
+  script:
+    - cd frontend           # Navigate into the frontend directory
+    - npm install           # Install dependencies
+    - npm run build         # Build the React app
+    - mv build ../public    # Move the build directory to the root of the project as 'public'
+
+  artifacts:
+    paths:
+      - public              # Set 'public' at the root as the artifacts directory
+
+  only:
+    - master                # Only deploy from the master branch

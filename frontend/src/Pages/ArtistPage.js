@@ -1,15 +1,15 @@
-import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
-import MusicPlayerBar from '../Components/MusicPlayerBar';
 
+import MusicPlayerBar from '../Components/MusicPlayerBar';
+import useAuthRedirect from '../Hooks/useAuthRedirect';
 import '../StyleSheets/Page.css';
 import LikeRecent from '../Components/LikeRecent';
-import InputSubmit from "../Components/InputSubmit";
 import SingleSongCard from '../Components/SingleSongCard';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback  } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 function ArtistPage() {
+    useAuthRedirect();
     const navigate = useNavigate();
     const { id } = useParams(); // Access the id parameter from the URL
     const [songs, setSongs] = useState([
@@ -18,39 +18,31 @@ function ArtistPage() {
 
     const [info, setInfo] = useState({})
     // Rest of your component code...
-
-    useEffect(() => {
-        // Fetch data based on the id parameter
-        fetchSongs()
-
-        // Additional useEffect logic as needed...
-    }, [id]);
     
     const navigateToHome = () => {
-        navigate('/');
+        navigate('/home');
     }
 
 
     
-    const fetchSongs = async () => {
+    const fetchSongs = useCallback(async () => {
         const url = `http://3.138.175.21:4000/artist/${id}`;
-    
-        // Create an object to hold the parameters
-    
         console.log('Fetching from:', url);
     
         try {
             const response = await axios.get(url);
             const query_data = response.data.data
             console.log('Server Response:', query_data);
-            setSongs(query_data.list)
-            setInfo(query_data.info)
-
             setSongs(query_data.list);
+            setInfo(query_data.info);
         } catch (error) {
             console.error('Search Error:', error);
         }
-    };
+    }, [id]); // Dependency array includes id
+
+    useEffect(() => {
+        fetchSongs();
+    }, [fetchSongs]);
     
     return (
         <div className='HomePage'>
@@ -71,7 +63,7 @@ function ArtistPage() {
             
             <div className="MainDisplay">
                 <div className="artistInfoContainer">
-                    <img className="artistImage" src={info.cover} alt="Artist Image" />
+                    <img className="artistImage" src={info.cover} alt="Artist" />
                     <div className="artistName">{info.name}</div>
                 </div>
                 {songs.map((song) => (

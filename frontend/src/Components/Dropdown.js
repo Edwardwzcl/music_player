@@ -23,9 +23,9 @@ const Dropdown = ({ options, onOptionSelected }) => {
       {showDropdown && (
         <div className="dropdown-content">
           {options.map((option, index) => (
-            <a key={index} href="#" onClick={() => handleSelect(option)}>
+            <button key={index} onClick={() => handleSelect(option)}>
               {option}
-            </a>
+            </button>
           ))}
         </div>
       )}

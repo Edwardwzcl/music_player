@@ -1,6 +1,6 @@
 // App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import HomePage from './Pages/HomePage';
 import SongPage from './Pages/SongPage';
 import LoginPage from './Pages/LoginPage';
@@ -15,11 +15,11 @@ function App() {
   return (
       <CombinedContextProvider>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path='/artist/:id' element={<ArtistPage />} /> 
           <Route path='/song' element={<SongPage />} /> 
-          <Route path='/category/:id' element={<CategoryPage />} />
+          <Route path='/category/:categoryId' element={<CategoryPage />} />
           <Route path='/like' element={<LikePage />} />
           <Route path='/recent' element={<RecentPage />} />
         </Routes>

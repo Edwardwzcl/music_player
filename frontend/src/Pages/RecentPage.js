@@ -1,11 +1,9 @@
 import MusicPlayerBar from '../Components/MusicPlayerBar';
 
 import '../StyleSheets/Page.css';
-import LikeRecent from '../Components/LikeRecent';
-import InputSubmit from "../Components/InputSubmit";
 import SingleSongCard from '../Components/SingleSongCard';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function RecentPage() {
@@ -17,7 +15,7 @@ function RecentPage() {
 
     
     const navigateToHome = () => {
-        navigate('/');
+        navigate('/home');
     }
 
 
@@ -38,6 +36,10 @@ function RecentPage() {
             console.error('Search Error:', error);
         }
     };
+
+    useEffect(() => {
+        fetchRecent();
+    }, []);
     
     return (
         <div className='Page'>

@@ -1,14 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../StyleSheets/LikeRecent.css';
-import axios from 'axios';
 
 
 function LikeRecent({ userName, type }) {
     const navigate = useNavigate();
 
     const navigateToListView = () => {
-        if (type == "Like") {
+        if (type === "Like") {
             navigate(`/like`);
         }
         else {

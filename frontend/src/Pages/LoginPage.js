@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import Login from '../Components/Login';
 import SignUp from '../Components/Signup';
 import '../StyleSheets/Login.css';
-import image1 from '../Assets/o1.jpg';
-import image2 from '../Assets/o2.jpg';
-import image3 from '../Assets/o3.jpg';
+import image1 from '../Assets/earth.jpg';
+import image2 from '../Assets/mr5.jpg';
+import image3 from '../Assets/yyyl.png';
 
 function LoginPage() {
 

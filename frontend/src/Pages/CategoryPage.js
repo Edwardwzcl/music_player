@@ -1,55 +1,48 @@
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { MusicContext } from '../Components/MusicProvider'; // Import MusicProvider
 import MusicPlayerBar from '../Components/MusicPlayerBar';
 import LikeRecent from '../Components/LikeRecent';
-import InputSubmit from "../Components/InputSubmit";
 import '../StyleSheets/Home.css';
 import axios from 'axios';
 import SingleSongCard from '../Components/SingleSongCard';
-import GalleryCard from '../Components/GalleryCard';
+import useAuthRedirect from '../Hooks/useAuthRedirect';
 
-function CategoryPage(categoryId, name, image) {
+function CategoryPage() {
+    useAuthRedirect();
     const navigate = useNavigate();
+    const { categoryId } = useParams(); // Access the id parameter from the URL
 
-    const { id } = useParams();
 
     const handleClick = () => {
-        navigate('/');
+        navigate('/home');
     }
 
     const [songs, setSongs] = useState([
         { id: 0, title: 'Test song', authors: "unknown"},
     ]);
 
-
-    const fetchSongUnderCategories = async () => {
-        const baseUrl = 'http://3.138.175.21:8080/api/search';
-    
-        // Create an object to hold the parameters
-        const queryParams = {
-            query: categoryId,
-        };
-    
-        
-        // Convert the object to a URL-encoded query string
-        const queryString = new URLSearchParams(queryParams).toString();
-    
-        // Construct the full URL with the query string
-        const url = `${baseUrl}?${queryString}`;
-    
-        console.log('Fetching search results from:', url);
-    
+    const fetchSongUnderCategories = useCallback(async () => {
+        console.log('Fetching search results from:', 'http://3.138.175.21:4000/genre', categoryId);
+        const body = { id: categoryId };
         try {
-            const response = await axios.get(url);
-            const query_data = response.data.result
-            console.log('Server Response:', query_data);
+            
+            const response = await axios.post('http://3.138.175.21:4000/genre', body);
+            //const query_data = response.data.data
+            console.log('Server Response:', response.data);
             // console.log('Server Response type:', typeof(response.data.data[0]));
-            setSongs(query_data);
+            if (response.data.data === null) {
+                console.log('No songs found');
+                return;
+            }
+            setSongs(response.data.data);
         } catch (error) {
             console.error('Search Error:', error);
         }
-    };
+    }, [categoryId]);
+
+    useEffect(() => {
+        fetchSongUnderCategories();
+    }, [fetchSongUnderCategories]);
     
     
     return (
@@ -76,8 +69,8 @@ function CategoryPage(categoryId, name, image) {
                 </div>
                 {songs.map((song) => (
                     <SingleSongCard 
-                        id={song.id}
-                        title={song.title}
+                        id={song.songId}
+                        title={song.songName}
                     />
                 ))}
             </div>
